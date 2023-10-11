@@ -9,10 +9,13 @@ Le Calculateur de Fin de Journée est une application web simple qui vous permet
 ## Comment ça fonctionne ?
 
 Entrez vos heures :
+
 ![](http://www.image-heberg.fr/files/16970299313407721804.png)
 
 Dans les champs prévus, entrez votre heure d'arrivée, votre heure de pause déjeuner et votre heure de reprise après la pause déjeuner au format "hh:mm". Par exemple, "07:40" pour 7 heures et 40 minutes.
-Cliquez sur le bouton "Calculer" : ![](http://www.image-heberg.fr/files/16970302581311027191.png)
+Cliquez sur le bouton "Calculer" :
+
+![](http://www.image-heberg.fr/files/16970302581311027191.png)
 
 Après avoir saisi vos heures, cliquez sur le bouton "Calculer".
 Résultat : ![](http://www.image-heberg.fr/files/16970298333487286428.png)
