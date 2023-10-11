@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculateur de Fin de Journée</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <h1>Calculateur de Fin de Journée</h1>
+    <p>
+      Entrez vos heures d'arrivée, de pause déjeuner et de reprise de pause
+      déjeuner pour calculer votre heure de fin de journée.
+    </p>
+
+    <label for="heureArrivee">Heure d'arrivée :</label>
+    <input type="time" id="heureArrivee" required />
+    <br />
+
+    <label for="heurePause">Heure de pause déjeuner :</label>
+    <input type="time" id="heurePause" required />
+    <br />
+
+    <label for="heureReprise">Heure de reprise après la pause déjeuner :</label>
+    <input type="time" id="heureReprise" required />
+    <br />
+
+    <button id="calculButton">Calculer</button>
+
+    <p id="resultat"></p>
+
+    <script src="script.js"></script>
+  </body>
+</html>
