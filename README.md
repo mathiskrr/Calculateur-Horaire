@@ -1,10 +1,10 @@
-# Calculateur de Fin de Journée
+# Calculateur Horaire
 
-Le Calculateur de Fin de Journée est une application web simple qui vous permet de calculer l'heure à laquelle vous devez finir votre journée de travail pour atteindre un total de 8 heures de travail. Il prend en compte votre heure d'arrivée, votre heure de pause déjeuner et votre heure de reprise après la pause déjeuner.
+Le Calculateur Horaire est une application web simple qui vous permet de calculer l'heure à laquelle vous devez finir votre journée de travail pour atteindre un total de 8 heures de travail. Il prend en compte votre heure d'arrivée, votre heure de pause déjeuner et votre heure de reprise après la pause déjeuner.
 
 ## Capture d'écran de l'application
 
-![](http://www.image-heberg.fr/files/16970299563580575764.png)
+![](http://www.image-heberg.fr/files/16970304441602445600.png)
 
 ## Comment ça fonctionne ?
 
