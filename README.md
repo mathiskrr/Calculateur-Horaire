@@ -4,7 +4,7 @@ Le Calculateur Horaire est une application web simple qui vous permet de calcule
 
 ## Capture d'écran de l'application
 
-![](http://www.image-heberg.fr/files/16971035461761369393.png)
+![](http://www.image-heberg.fr/files/16971039894148088416.png)
 
 ## Comment ça fonctionne ?
 
@@ -25,7 +25,7 @@ L'heure de fin calculée s'affichera sous le bouton "Calculer".
 
 Un historique à également été mit en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre naviguateur et peut être vidé avec le bouton "Supprimer l'historique"
 
-![](http://www.image-heberg.fr/files/16971038152189377711.png)
+![](http://www.image-heberg.fr/files/16971040183778813220.png)
 
 ## Exemple d'utilisation
 
