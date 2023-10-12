@@ -1,24 +1,45 @@
 document.getElementById("calculButton").addEventListener("click", function () {
-  // Cette ligne ajoute un événement "click" à l'élément HTML avec l'ID "calculButton" et
-  // associe une fonction qui sera exécutée lorsque le bouton est cliqué.
-
   const heureArrivee = document.getElementById("heureArrivee").value;
   const heurePause = document.getElementById("heurePause").value;
   const heureReprise = document.getElementById("heureReprise").value;
-  // Ces lignes extraient les valeurs entrées dans les champs de texte "heureArrivee", "heurePause" et "heureReprise" et les stockent dans des variables.
+  const dureeTravail = parseFloat(
+    document.getElementById("dureeTravail").value
+  );
 
-  // Vérification si l'un des champs est vide
-  if (heureArrivee === "" || heurePause === "" || heureReprise === "") {
-    // Afficher un message d'erreur
-    alert("Veuillez remplir tous les champs avant de calculer l'heure de fin.");
-    return; // Arrêter l'exécution de la fonction
+  if (
+    heureArrivee === "" ||
+    heurePause === "" ||
+    heureReprise === "" ||
+    isNaN(dureeTravail) ||
+    dureeTravail <= 0 ||
+    dureeTravail > 12
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 et 12 heures.",
+    });
+    return;
   }
 
-  const currentDate = new Date(); // Obtient la date et l'heure actuelles.
+  if (
+    heureArrivee === "" ||
+    heurePause === "" ||
+    heureReprise === "" ||
+    isNaN(dureeTravail)
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Veuillez remplir tous les champs avant de calculer l'heure de fin.",
+    });
+    return;
+  }
+
+  const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
-  // Ces lignes extraient l'année, le mois et le jour actuels à partir de la date actuelle.
 
   const heureArriveeObj = new Date(
     currentYear,
@@ -41,36 +62,88 @@ document.getElementById("calculButton").addEventListener("click", function () {
     heureReprise.split(":")[0],
     heureReprise.split(":")[1]
   );
-  // Ces lignes créent des objets Date en utilisant les valeurs d'année, de mois et de jour actuelles
-  // et les heures et les minutes extraites des champs de texte "heureArrivee", "heurePause" et "heureReprise".
 
-  // Vérifier si l'heure de reprise est avant l'heure de pause (changement de jour)
+  const pauseDuration = (heureRepriseObj - heurePauseObj) / (1000 * 60);
+  if (pauseDuration < 30) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "La durée de la pause doit être d'au moins 30 minutes.",
+    });
+    return;
+  }
+
+  if (heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Vérifiez vos horaires ! L'heure de pause doit être après l'heure d'arrivée et l'heure de reprise après l'heure de pause.",
+    });
+    return;
+  }
+
   if (heureRepriseObj < heurePauseObj) {
     heureRepriseObj.setDate(heureRepriseObj.getDate() + 1);
-    // Si l'heure de reprise est antérieure à l'heure de pause, cela signifie que le travail traverse
-    // minuit et qu'il y a un changement de jour. Dans ce cas, nous ajoutons un jour à l'heure de reprise.
   }
 
   const difference = heurePauseObj - heureArriveeObj;
   const totalMinutes = difference / (1000 * 60);
-  const heuresTravailRestant = 8 - totalMinutes / 60;
-  // Ces lignes calculent la différence de temps, le total des minutes travaillées
-  // et les heures de travail restantes nécessaires pour atteindre 8 heures.
+  const heuresTravailRestant = dureeTravail - totalMinutes / 60;
 
-  // Ajout des heures de travail restantes à l'heure de reprise
   const FinCalcul = new Date(
     heureRepriseObj.getTime() + heuresTravailRestant * 60 * 60 * 1000
   );
-  // Cette ligne ajoute les heures de travail restantes (en millisecondes) à l'heure de reprise pour obtenir l'heure de fin.
 
   const heureFinFormat = FinCalcul.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   });
-  // Cette ligne formate l'heure de fin au format "hh:mm" (heures et minutes).
 
-  document.getElementById(
-    "resultat"
-  ).innerHTML = `Vous devez finir à ${heureFinFormat} pour travailler 8 heures au total.`;
-  // Cette ligne affiche le résultat dans la page en remplaçant le contenu de l'élément avec l'ID "resultat".
+  const resultatElem = document.getElementById("resultat");
+  resultatElem.style.opacity = 0;
+  setTimeout(() => {
+    resultatElem.style.opacity = 1;
+    resultatElem.innerHTML = `Vous devez finir à ${heureFinFormat} pour travailler ${dureeTravail} heures au total.`;
+  }, 50);
+
+  // Ajouter le résultat à l'historique et au localStorage
+  const li = document.createElement("li");
+  const texteHistorique = `Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin à ${heureFinFormat}`;
+  li.textContent = texteHistorique;
+  document.getElementById("historique").appendChild(li);
+
+  // Sauvegarder l'historique dans localStorage
+  let historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
+  historiqueArr.push(texteHistorique);
+  localStorage.setItem("historiqueArr", JSON.stringify(historiqueArr));
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Charger l'historique depuis localStorage
+  let historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
+  historiqueArr.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    document.getElementById("historique").appendChild(li);
+  });
+});
+
+document
+  .getElementById("clearHistoryButton")
+  .addEventListener("click", function () {
+    // Vider le localStorage pour l'historique
+    localStorage.removeItem("historiqueArr");
+
+    // Vider l'affichage de l'historique
+    const ul = document.getElementById("historique");
+    while (ul.firstChild) {
+      ul.removeChild(ul.firstChild);
+    }
+
+    // Optionnel : Affichez une alerte pour confirmer la suppression
+    Swal.fire({
+      icon: "success",
+      title: "Historique supprimé",
+      text: "Votre historique a été effacé.",
+    });
+  });

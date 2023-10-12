@@ -1,42 +1,56 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #f2f2f2;
+  background-color: #e9ecef; /* Un fond plus doux */
   margin: 0;
   padding: 0;
 }
 
 h1 {
   color: #333;
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 p {
   font-size: 18px;
-  margin: 20px 0;
+  margin: 15px 0;
+  color: #495057; /* Gris foncé pour le texte */
 }
 
 label {
   font-weight: bold;
   display: block;
-  margin: 10px 0;
+  margin: 15px 0;
   font-size: 16px;
+  color: #495057; /* Gris foncé pour les labels */
 }
 
-input[type="time"] {
-  width: 100px;
+input[type="time"],
+input[type="number"] {
+  width: 150px; /* Une largeur fixe pour tous les champs de saisie */
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #ced4da; /* Bordure grisâtre */
+  border-radius: 5px; /* Bords arrondis */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Transitions douces */
+}
+
+input[type="time"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Ombre bleue lors de la mise au point */
 }
 
 button {
   background-color: #007bff;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 30px; /* Plus de padding sur les côtés */
   border: none;
+  border-radius: 5px; /* Bords arrondis */
   cursor: pointer;
   font-size: 16px;
-  margin: 20px 0;
+  margin: 25px 0;
   transition: background-color 0.3s;
 }
 
@@ -51,17 +65,25 @@ button:hover {
   color: #333;
 }
 
-/* Media Query pour les écrans de taille réduite */
-@media screen and (max-width: 768px) {
-  input[type="time"] {
-    width: 80px;
-    font-size: 14px;
-  }
+h2 {
+  margin-top: 15px;
+  margin-bottom: 0px;
+  color: #333;
+}
 
-  button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
+#historique {
+  list-style-type: none; /* Suppression des puces */
+  padding: 0;
+}
+
+#historique li {
+  padding: 10px;
+  border-bottom: 1px solid #ced4da;
+  font-size: 16px;
+}
+
+#historique li:last-child {
+  border-bottom: none;
 }
 
 /* Animation pour le bouton */
@@ -80,13 +102,14 @@ button:hover {
 
 /* Media Query pour les écrans de taille réduite */
 @media screen and (max-width: 768px) {
-  input[type="time"] {
-    width: 80px;
+  input[type="time"],
+  input[type="number"] {
+    width: 130px;
     font-size: 14px;
   }
 
   button {
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 8px 24px;
   }
 }
