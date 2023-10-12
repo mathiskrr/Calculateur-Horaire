@@ -13,6 +13,7 @@ Entrez vos heures :
 ![](http://www.image-heberg.fr/files/16971035833978493863.png)
 
 Dans les champs prévus, entrez votre heure d'arrivée, votre heure de pause déjeuner, votre heure de reprise après la pause déjeuner et le nombre d'heure que vous devez travailler au format "hh:mm". Par exemple, "07:40" pour 7 heures et 40 minutes.
+
 Cliquez sur le bouton "Calculer" :
 
 ![](http://www.image-heberg.fr/files/16971035631106939290.png)
@@ -23,7 +24,7 @@ Résultat : ![](http://www.image-heberg.fr/files/16971036039337526.png)
 L'application calculera automatiquement l'heure à laquelle vous devez finir votre journée pour atteindre un total de 8 heures de travail.
 L'heure de fin calculée s'affichera sous le bouton "Calculer".
 
-Un historique à également été mit en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre naviguateur et peut être vidé avec le bouton "Supprimer l'historique"
+Un historique a également été mis en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre navigateur et peut être vidé avec le bouton "Supprimer l'historique".
 
 ![](http://www.image-heberg.fr/files/16971040183778813220.png)
 
