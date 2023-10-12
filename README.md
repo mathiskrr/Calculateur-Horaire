@@ -41,6 +41,8 @@ git clone https://github.com/mathiskrr/Calculateur-Horaire.git
 
 Allez dans le répertoire du projet double-cliquez sur le fichier index.html pour ouvrir l'application dans votre navigateur web.
 
+Vous pouvez également accéder à l'outil depuis ce lien : https://calculateur-horaire.vercel.app/
+
 ## Contribuer
 
 Si vous souhaitez contribuer à ce projet, vous êtes les bienvenus ! Vous pouvez ouvrir des issues, proposer des améliorations ou envoyer des pull requests.
