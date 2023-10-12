@@ -12,7 +12,7 @@ Entrez vos heures :
 
 ![](http://www.image-heberg.fr/files/16971035833978493863.png)
 
-Dans les champs prévus, entrez votre heure d'arrivée, votre heure de pause déjeuner, votre heure de reprise après la pause déjeuner et le nombre d'heure que vous devez travailler au format "hh:mm". Par exemple, "07:40" pour 7 heures et 40 minutes.
+Dans les champs prévus, entrez votre heure d'arrivée, votre heure de pause déjeuner, votre heure de reprise après la pause déjeuner et le nombre d'heures que vous devez travailler au format "hh:mm". Par exemple, "07:40" pour 7 heures et 40 minutes.
 
 Cliquez sur le bouton "Calculer" :
 
