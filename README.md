@@ -25,7 +25,7 @@ L'heure de fin calculée s'affichera sous le bouton "Calculer".
 
 Un historique à également été mit en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre naviguateur et peut être vidé avec le bouton "Supprimer l'historique"
 
-![](http://www.image-heberg.fr/files/16971036039337526.png)
+![](http://www.image-heberg.fr/files/16971038152189377711.png)
 
 ## Exemple d'utilisation
 
