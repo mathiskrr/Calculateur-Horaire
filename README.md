@@ -1,6 +1,6 @@
 # Calculateur Horaire
 
-Le Calculateur Horaire est une application web simple qui vous permet de calculer l'heure à laquelle vous devez finir votre journée de travail pour atteindre un total de 8 heures de travail. Il prend en compte votre heure d'arrivée, votre heure de pause déjeuner et votre heure de reprise après la pause déjeuner.
+Le Calculateur Horaire est une application web simple qui vous permet de calculer l'heure à laquelle vous devez finir votre journée de travail pour atteindre votre total d'heures de travail. Il prend en compte votre heure d'arrivée, votre heure de pause déjeuner et votre heure de reprise après la pause déjeuner.
 
 ## Capture d'écran de l'application
 
@@ -21,7 +21,7 @@ Cliquez sur le bouton "Calculer" :
 Après avoir saisi vos heures, cliquez sur le bouton "Calculer".
 Résultat : ![](http://www.image-heberg.fr/files/16971036039337526.png)
 
-L'application calculera automatiquement l'heure à laquelle vous devez finir votre journée pour atteindre un total de 8 heures de travail.
+L'application calculera automatiquement l'heure à laquelle vous devez finir votre journée pour atteindre votre total d'heures de travail.
 L'heure de fin calculée s'affichera sous le bouton "Calculer".
 
 Un historique a également été mis en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre navigateur et peut être vidé avec le bouton "Supprimer l'historique".
@@ -30,7 +30,7 @@ Un historique a également été mis en place pour avoir un suivi des horaires. 
 
 ## Exemple d'utilisation
 
-Supposons que vous arriviez au travail à 9h00, preniez une pause déjeuner de 12h00 à 13h00, et repreniez le travail à 13h15. En utilisant l'application, vous saurez à quelle heure vous devrez terminer votre journée pour avoir travaillé 8 heures au total.
+Supposons que vous arriviez au travail à 9h00, que vous preniez une pause déjeuner à 12h00, et que vous repreniez le travail à 13h00. Grâce à l'application, vous saurez à quelle heure terminer votre journée pour avoir accompli votre quota d'heures de travail.
 
 ## Comment exécuter l'application localement ?
 

@@ -41,6 +41,8 @@ document.getElementById("calculButton").addEventListener("click", function () {
   const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
 
+  const formattedDate = `${currentDay}/${currentMonth}/${currentYear}`; // Date au format "JJ/MM/AAAA"
+
   const heureArriveeObj = new Date(
     currentYear,
     currentMonth,
@@ -108,7 +110,7 @@ document.getElementById("calculButton").addEventListener("click", function () {
 
   // Ajouter le résultat à l'historique et au localStorage
   const li = document.createElement("li");
-  const texteHistorique = `Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin à ${heureFinFormat}`;
+  const texteHistorique = `${formattedDate} - Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin à de la journée à ${heureFinFormat}`;
   li.textContent = texteHistorique;
   document.getElementById("historique").appendChild(li);
 
