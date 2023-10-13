@@ -11,7 +11,7 @@ const appVersion = "1.0"; // Remplacez par la version actuelle de l'application
 
 const versionElem = document.createElement("div");
 versionElem.id = "appVersion";
-versionElem.textContent = "Version " + appVersion;
+versionElem.textContent = "Version " + appVersion + " - " + "Oct 2023";
 document.body.appendChild(versionElem);
 
 // Fonction utilitaire pour convertir une heure en objet Date

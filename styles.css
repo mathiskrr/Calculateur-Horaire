@@ -152,13 +152,24 @@ button:hover {
 
 #appVersion {
   position: fixed; /* Position fixe par rapport à la fenêtre */
-  bottom: 10px; /* 10px depuis le bas de la fenêtre */
+  bottom: 50px; /* 10px depuis le bas de la fenêtre */
   right: 10px; /* 10px depuis le côté droit de la fenêtre */
   font-size: 12px; /* Taille de police plus petite pour la version */
   color: var(
     --text-color
   ); /* Utilisation de la couleur de texte définie pour le thème */
   z-index: 999; /* Juste en dessous du bouton de mode sombre */
+}
+
+#credits {
+  position: fixed; /* Position fixe par rapport à la fenêtre */
+  bottom: 30px; /* 30px depuis le bas de la fenêtre */
+  right: 10px; /* 10px depuis le côté droit de la fenêtre */
+  font-size: 12px; /* Taille de police plus petite pour les crédits */
+  color: var(
+    --text-color
+  ); /* Utilisation de la couleur de texte définie pour le thème */
+  z-index: 998; /* Juste en dessous de la version et du bouton de mode sombre */
 }
 
 /* Media Query pour les écrans de taille réduite */
