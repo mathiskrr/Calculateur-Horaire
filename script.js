@@ -83,6 +83,16 @@ document.getElementById("calculButton").addEventListener("click", () => {
   const heurePauseObj = convertToDateTime(heurePause);
   const heureRepriseObj = convertToDateTime(heureReprise);
 
+  // Vérification des horaires pour s'assurer de leur cohérence
+  if (heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Vérifiez vos horaires ! L'heure d'arrivée doit être antérieure à l'heure de pause et l'heure de pause doit être antérieure à l'heure de reprise.",
+    });
+    return;
+  }
+
   // Si l'heure de reprise est avant l'heure de pause, cela signifie que la pause s'étend au-delà de minuit
   if (heureRepriseObj < heurePauseObj)
     heureRepriseObj.setDate(heureRepriseObj.getDate() + 1);
@@ -128,7 +138,7 @@ document.getElementById("calculButton").addEventListener("click", () => {
 
   // Ajout du résultat à la liste de l'historique
   const formattedDate = new Date().toLocaleDateString();
-  const texteHistorique = `${formattedDate} - Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin à de la journée à ${heureFinFormat}`;
+  const texteHistorique = `${formattedDate} - Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin de la journée à ${heureFinFormat}`;
   const li = document.createElement("li");
   li.textContent = texteHistorique;
   historiqueElem.appendChild(li);
