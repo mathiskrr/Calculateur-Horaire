@@ -37,18 +37,17 @@ if (storedTheme) {
 // Ajout du bouton de basculement du mode sombre
 const themeButton = document.createElement("button");
 themeButton.id = "themeToggleButton";
-themeButton.textContent =
-  storedTheme === "dark" ? "Basculer en mode clair" : "Basculer en mode sombre";
+themeButton.textContent = storedTheme === "dark" ? "Mode clair" : "Mode sombre";
 document.body.appendChild(themeButton);
 
 themeButton.addEventListener("click", () => {
   if (document.documentElement.getAttribute("data-theme") === "dark") {
     document.documentElement.removeAttribute("data-theme");
-    themeButton.textContent = "Basculer en mode sombre";
+    themeButton.textContent = "Mode sombre";
     localStorage.removeItem("theme-mode"); // Supprimez le mode du localStorage
   } else {
     document.documentElement.setAttribute("data-theme", "dark");
-    themeButton.textContent = "Basculer en mode clair";
+    themeButton.textContent = "Mode clair";
     localStorage.setItem("theme-mode", "dark"); // Enregistrez le mode sombre dans le localStorage
   }
 });

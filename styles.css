@@ -96,6 +96,10 @@ button {
   margin-bottom: 0px;
 }
 
+#clearHistoryButton {
+  margin-top: 0;
+}
+
 button:hover {
   background-color: var(--button-hover-bg-color);
 }
@@ -163,9 +167,10 @@ button:hover {
 
 #credits {
   position: fixed; /* Position fixe par rapport à la fenêtre */
-  bottom: 30px; /* 30px depuis le bas de la fenêtre */
+  bottom: 20px; /* 30px depuis le bas de la fenêtre */
   right: 10px; /* 10px depuis le côté droit de la fenêtre */
   font-size: 12px; /* Taille de police plus petite pour les crédits */
+  text-align: right;
   color: var(
     --text-color
   ); /* Utilisation de la couleur de texte définie pour le thème */
