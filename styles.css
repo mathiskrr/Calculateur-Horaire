@@ -172,12 +172,28 @@ button:hover {
   z-index: 998; /* Juste en dessous de la version et du bouton de mode sombre */
 }
 
+.header-container {
+  display: flex;
+  align-items: center; /* aligne verticalement les éléments au centre */
+  justify-content: center; /* aligne horizontalement les éléments au centre */
+  width: 100%;
+}
+
+#headerImage {
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+}
+
 /* Media Query pour les écrans de taille réduite */
 @media screen and (max-width: 768px) {
   input[type="time"],
   input[type="number"] {
     width: 130px;
     font-size: 14px;
+  }
+  #headerImage {
+    height: 30px; /* réduisez la taille de l'image pour les petits écrans */
   }
 
   button {
