@@ -151,6 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Gestionnaire d'événements pour le bouton d'effacement de l'historique
 document.getElementById("clearHistoryButton").addEventListener("click", () => {
+  const historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
+
+  // Si l'historique est vide
+  if (historiqueArr.length === 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Erreur",
+      text: "Il n'y a pas d'historique à supprimer.",
+    });
+    return;
+  }
+
   // Suppression de l'historique du localStorage
   localStorage.removeItem("historiqueArr");
 
