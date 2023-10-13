@@ -1,18 +1,71 @@
-// Lorsqu'on clique sur le bouton de calcul
-document.getElementById("calculButton").addEventListener("click", function () {
-  // Récupération des valeurs des champs
-  const heureArrivee = document.getElementById("heureArrivee").value;
-  const heurePause = document.getElementById("heurePause").value;
-  const heureReprise = document.getElementById("heureReprise").value;
-  const dureeTravail = parseFloat(
-    document.getElementById("dureeTravail").value
-  );
+// Eléments du DOM fréquemment utilisés
+// Ces variables stockent les références aux éléments du DOM pour éviter d'avoir à les rechercher à chaque fois.
+const heureArriveeElem = document.getElementById("heureArrivee");
+const heurePauseElem = document.getElementById("heurePause");
+const heureRepriseElem = document.getElementById("heureReprise");
+const dureeTravailElem = document.getElementById("dureeTravail");
+const resultatElem = document.getElementById("resultat");
+const historiqueElem = document.getElementById("historique");
 
-  // Vérification des champs (s'ils sont remplis correctement et la durée de travail est entre 1 et 12 heures)
+const appVersion = "1.0"; // Remplacez par la version actuelle de l'application
+
+const versionElem = document.createElement("div");
+versionElem.id = "appVersion";
+versionElem.textContent = "Version " + appVersion;
+document.body.appendChild(versionElem);
+
+// Fonction utilitaire pour convertir une heure en objet Date
+// Cette fonction transforme une chaîne de caractères représentant une heure (sous la forme HH:MM) en un objet Date.
+const convertToDateTime = (heureStr) => {
+  const currentDate = new Date();
+  const [hour, minute] = heureStr.split(":");
+  return new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+    hour,
+    minute
+  );
+};
+
+// Vérifiez le mode stocké lors du chargement de la page
+const storedTheme = localStorage.getItem("theme-mode");
+if (storedTheme) {
+  document.documentElement.setAttribute("data-theme", storedTheme);
+}
+
+// Ajout du bouton de basculement du mode sombre
+const themeButton = document.createElement("button");
+themeButton.id = "themeToggleButton";
+themeButton.textContent =
+  storedTheme === "dark" ? "Basculer en mode clair" : "Basculer en mode sombre";
+document.body.appendChild(themeButton);
+
+themeButton.addEventListener("click", () => {
+  if (document.documentElement.getAttribute("data-theme") === "dark") {
+    document.documentElement.removeAttribute("data-theme");
+    themeButton.textContent = "Basculer en mode sombre";
+    localStorage.removeItem("theme-mode"); // Supprimez le mode du localStorage
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    themeButton.textContent = "Basculer en mode clair";
+    localStorage.setItem("theme-mode", "dark"); // Enregistrez le mode sombre dans le localStorage
+  }
+});
+
+// Gestionnaire d'événements pour le bouton de calcul
+document.getElementById("calculButton").addEventListener("click", () => {
+  // Récupération des valeurs des champs du formulaire
+  const heureArrivee = heureArriveeElem.value;
+  const heurePause = heurePauseElem.value;
+  const heureReprise = heureRepriseElem.value;
+  const dureeTravail = parseFloat(dureeTravailElem.value);
+
+  // Vérification de la validité des entrées
   if (
-    heureArrivee === "" ||
-    heurePause === "" ||
-    heureReprise === "" ||
+    !heureArrivee ||
+    !heurePause ||
+    !heureReprise ||
     isNaN(dureeTravail) ||
     dureeTravail <= 0 ||
     dureeTravail > 12
@@ -25,148 +78,91 @@ document.getElementById("calculButton").addEventListener("click", function () {
     return;
   }
 
-  // Vérification des champs (s'ils sont remplis avant de calculer l'heure de fin)
+  // Conversion des heures entrées en objets Date pour faciliter les opérations
+  const heureArriveeObj = convertToDateTime(heureArrivee);
+  const heurePauseObj = convertToDateTime(heurePause);
+  const heureRepriseObj = convertToDateTime(heureReprise);
+
+  // Si l'heure de reprise est avant l'heure de pause, cela signifie que la pause s'étend au-delà de minuit
+  if (heureRepriseObj < heurePauseObj)
+    heureRepriseObj.setDate(heureRepriseObj.getDate() + 1);
+
+  // Calcul de la durée de la pause en minutes
+  const pauseDuration = (heureRepriseObj - heurePauseObj) / (1000 * 60);
+
+  // Vérifications supplémentaires sur la validité des horaires
   if (
-    heureArrivee === "" ||
-    heurePause === "" ||
-    heureReprise === "" ||
-    isNaN(dureeTravail)
+    pauseDuration < 30 ||
+    heureArriveeObj >= heurePauseObj ||
+    heurePauseObj >= heureRepriseObj
   ) {
     Swal.fire({
       icon: "error",
       title: "Erreur",
-      text: "Veuillez remplir tous les champs avant de calculer l'heure de fin.",
+      text: "Vérifiez vos horaires ! Assurez-vous que la durée de pause est d'au moins 30 minutes et que les horaires sont cohérents.",
     });
     return;
-  }
-
-  // Obtention de la date courante
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentDay = currentDate.getDate();
-
-  // Formatage du jour et du mois pour avoir toujours deux chiffres
-  const formattedDay = currentDay < 10 ? "0" + currentDay : currentDay;
-  const formattedMonth = currentMonth < 10 ? "0" + currentMonth : currentMonth;
-
-  // Formulation de la date au format "JJ/MM/AAAA"
-  const formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
-
-  // Conversion des heures entrées en objets de type Date pour les manipuler
-  const heureArriveeObj = new Date(
-    currentYear,
-    currentMonth - 1, // Correction : les mois vont de 0 à 11
-    currentDay,
-    heureArrivee.split(":")[0],
-    heureArrivee.split(":")[1]
-  );
-  const heurePauseObj = new Date(
-    currentYear,
-    currentMonth - 1, // Correction
-    currentDay,
-    heurePause.split(":")[0],
-    heurePause.split(":")[1]
-  );
-  const heureRepriseObj = new Date(
-    currentYear,
-    currentMonth - 1, // Correction
-    currentDay,
-    heureReprise.split(":")[0],
-    heureReprise.split(":")[1]
-  );
-
-  // Calcul de la durée de la pause
-  const pauseDuration = (heureRepriseObj - heurePauseObj) / (1000 * 60);
-
-  // Vérification que la pause est d'au moins 30 minutes
-  if (pauseDuration < 30) {
-    Swal.fire({
-      icon: "error",
-      title: "Erreur",
-      text: "La durée de la pause doit être d'au moins 30 minutes.",
-    });
-    return;
-  }
-
-  // Vérification de la validité des horaires
-  if (heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj) {
-    Swal.fire({
-      icon: "error",
-      title: "Erreur",
-      text: "Vérifiez vos horaires ! L'heure de pause doit être après l'heure d'arrivée et l'heure de reprise après l'heure de pause.",
-    });
-    return;
-  }
-
-  // Si l'heure de reprise est avant l'heure de pause (cas de pause après minuit), ajout d'un jour
-  if (heureRepriseObj < heurePauseObj) {
-    heureRepriseObj.setDate(heureRepriseObj.getDate() + 1);
   }
 
   // Calcul du temps travaillé avant la pause
-  const difference = heurePauseObj - heureArriveeObj;
-  const totalMinutes = difference / (1000 * 60);
+  const totalMinutes = (heurePauseObj - heureArriveeObj) / (1000 * 60);
   const heuresTravailRestant = dureeTravail - totalMinutes / 60;
 
-  // Calcul de l'heure de fin en ajoutant le temps de travail restant à l'heure de reprise
+  // Calcul de l'heure de fin de travail
   const FinCalcul = new Date(
     heureRepriseObj.getTime() + heuresTravailRestant * 60 * 60 * 1000
   );
 
-  // Formatage de l'heure de fin
+  // Formatage de l'heure de fin pour l'affichage
   const heureFinFormat = FinCalcul.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   });
 
-  // Affichage de l'heure de fin avec un effet d'opacité
-  const resultatElem = document.getElementById("resultat");
+  // Mise à jour de l'élément de résultat avec un effet d'opacité pour attirer l'attention
   resultatElem.style.opacity = 0;
   setTimeout(() => {
     resultatElem.style.opacity = 1;
     resultatElem.innerHTML = `Vous devez finir à ${heureFinFormat} pour travailler ${dureeTravail} heures au total.`;
   }, 50);
 
-  // Ajout du résultat à l'historique et sauvegarde dans le localStorage
-  const li = document.createElement("li");
+  // Ajout du résultat à la liste de l'historique
+  const formattedDate = new Date().toLocaleDateString();
   const texteHistorique = `${formattedDate} - Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin à de la journée à ${heureFinFormat}`;
+  const li = document.createElement("li");
   li.textContent = texteHistorique;
-  document.getElementById("historique").appendChild(li);
+  historiqueElem.appendChild(li);
 
-  // Sauvegarde dans le localStorage
-  let historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
+  // Enregistrement du résultat dans le localStorage pour une persistance entre les sessions
+  const historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
   historiqueArr.push(texteHistorique);
   localStorage.setItem("historiqueArr", JSON.stringify(historiqueArr));
 });
 
-// Au chargement du document, chargement de l'historique depuis le localStorage
-document.addEventListener("DOMContentLoaded", function () {
-  let historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
+// Au chargement du document, récupération et affichage de l'historique depuis le localStorage
+document.addEventListener("DOMContentLoaded", () => {
+  const historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
   historiqueArr.forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
-    document.getElementById("historique").appendChild(li);
+    historiqueElem.appendChild(li);
   });
 });
 
-// Lorsqu'on clique sur le bouton pour effacer l'historique
-document
-  .getElementById("clearHistoryButton")
-  .addEventListener("click", function () {
-    // Suppression de l'historique dans le localStorage
-    localStorage.removeItem("historiqueArr");
+// Gestionnaire d'événements pour le bouton d'effacement de l'historique
+document.getElementById("clearHistoryButton").addEventListener("click", () => {
+  // Suppression de l'historique du localStorage
+  localStorage.removeItem("historiqueArr");
 
-    // Suppression de l'affichage de l'historique
-    const ul = document.getElementById("historique");
-    while (ul.firstChild) {
-      ul.removeChild(ul.firstChild);
-    }
+  // Effacement de la liste d'historique à l'écran
+  while (historiqueElem.firstChild) {
+    historiqueElem.removeChild(historiqueElem.firstChild);
+  }
 
-    // Affichage d'une alerte pour confirmer la suppression
-    Swal.fire({
-      icon: "success",
-      title: "Historique supprimé",
-      text: "Votre historique a été effacé.",
-    });
+  // Notification à l'utilisateur que l'historique a été effacé
+  Swal.fire({
+    icon: "success",
+    title: "Historique supprimé",
+    text: "Votre historique a été effacé.",
   });
+});

@@ -1,21 +1,60 @@
+/* Variables par défaut (mode clair) */
+:root {
+  --bg-color: #e9ecef;
+  --text-color: #495057;
+  --input-bg: white;
+  --border-color: #ced4da;
+  --button-bg-color: #007bff;
+  --button-hover-bg-color: #0056b3;
+  --button-text-color: #fff;
+  --title-color: #333;
+  --label-color: #495057;
+}
+
+/* Mode sombre */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: white;
+  --input-bg: #2c2c2c;
+  --border-color: #555;
+  --button-bg-color: #0056b3;
+  --button-hover-bg-color: #007bff;
+  --button-text-color: #fff;
+  --title-color: white;
+  --label-color: white;
+}
+
+[data-theme="dark"] input[type="time"],
+[data-theme="dark"] input[type="number"] {
+  background-color: #333; /* fond sombre */
+  color: #e9ecef; /* texte clair */
+  border: 1px solid #495057; /* bordure plus foncée */
+}
+
+/* Adapter également la couleur de la bordure lors du focus en mode sombre */
+[data-theme="dark"] input[type="time"]:focus,
+[data-theme="dark"] input[type="number"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #e9ecef; /* Un fond plus doux */
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin: 0;
   padding: 0;
 }
 
-h1 {
-  color: #333;
-  margin-top: 40px;
-  margin-bottom: 20px;
+h1,
+h2 {
+  color: var(--title-color);
 }
 
 p {
   font-size: 18px;
   margin: 15px 0;
-  color: #495057; /* Gris foncé pour le texte */
 }
 
 label {
@@ -23,31 +62,33 @@ label {
   display: block;
   margin: 15px 0;
   font-size: 16px;
-  color: #495057; /* Gris foncé pour les labels */
+  color: var(--label-color);
 }
 
 input[type="time"],
 input[type="number"] {
-  width: 150px; /* Une largeur fixe pour tous les champs de saisie */
+  width: 150px;
   padding: 10px;
   font-size: 16px;
+  border-radius: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #fff; /* fond blanc */
+  color: #333; /* texte noir */
   border: 1px solid #ced4da; /* Bordure grisâtre */
-  border-radius: 5px; /* Bords arrondis */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Transitions douces */
 }
 
 input[type="time"]:focus,
 input[type="number"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Ombre bleue lors de la mise au point */
+  border-color: var(--button-bg-color);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 30px; /* Plus de padding sur les côtés */
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  padding: 10px 30px;
   border: none;
-  border-radius: 5px; /* Bords arrondis */
+  border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   margin: 25px 0;
@@ -56,30 +97,31 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: var(--button-hover-bg-color);
 }
 
 #resultat {
   font-weight: bold;
   margin-top: 20px;
   font-size: 18px;
-  color: #333;
-}
-
-h2 {
-  margin-top: 15px;
-  margin-bottom: 0px;
-  color: #333;
 }
 
 #historique {
-  list-style-type: none; /* Suppression des puces */
+  list-style-type: none;
   padding: 0;
+  margin-bottom: 50px;
+}
+
+/* Conteneur pour centrer le contenu et limiter sa largeur */
+.container {
+  max-width: 827px; /* vous pouvez ajuster cette valeur selon vos préférences */
+  margin: 0 auto;
+  padding: 0 20px; /* un peu de padding pour éviter que le contenu touche les bords sur les petits écrans */
 }
 
 #historique li {
   padding: 10px;
-  border-bottom: 1px solid #ced4da;
+  border-bottom: 1px solid var(--border-color);
   font-size: 16px;
 }
 
@@ -99,6 +141,24 @@ h2 {
   100% {
     transform: scale(1.1);
   }
+}
+
+#themeToggleButton {
+  position: fixed; /* Position fixe par rapport à la fenêtre */
+  bottom: 20px; /* 20px depuis le bas de la fenêtre */
+  left: 20px; /* 20px depuis le côté gauche de la fenêtre */
+  z-index: 1000; /* Assurez-vous qu'il apparaît au-dessus des autres éléments */
+}
+
+#appVersion {
+  position: fixed; /* Position fixe par rapport à la fenêtre */
+  bottom: 10px; /* 10px depuis le bas de la fenêtre */
+  right: 10px; /* 10px depuis le côté droit de la fenêtre */
+  font-size: 12px; /* Taille de police plus petite pour la version */
+  color: var(
+    --text-color
+  ); /* Utilisation de la couleur de texte définie pour le thème */
+  z-index: 999; /* Juste en dessous du bouton de mode sombre */
 }
 
 /* Media Query pour les écrans de taille réduite */
