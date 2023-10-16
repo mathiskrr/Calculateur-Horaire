@@ -6,7 +6,7 @@ const dureeTravailElem = document.getElementById("dureeTravail"); // Ce sera mai
 const resultatElem = document.getElementById("resultat");
 const historiqueElem = document.getElementById("historique");
 
-const appVersion = "1.0"; // Remplacez par la version actuelle de l'application
+const appVersion = "1.1"; // Remplacez par la version actuelle de l'application
 
 const versionElem = document.createElement("div");
 versionElem.id = "appVersion";
