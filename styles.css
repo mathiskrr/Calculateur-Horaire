@@ -9,6 +9,7 @@
   --button-text-color: #fff;
   --title-color: #333;
   --label-color: #495057;
+  --link-color: blue;
 }
 
 /* Mode sombre */
@@ -22,6 +23,17 @@
   --button-text-color: #fff;
   --title-color: white;
   --label-color: white;
+  --link-color: #4f9dff;
+}
+
+/* Style pour les liens */
+a {
+  color: var(--link-color, blue); /* couleur par défaut pour le mode clair */
+  text-decoration: none; /* optionnel : pour enlever le soulignement des liens */
+}
+
+a:hover {
+  text-decoration: underline; /* optionnel : pour souligner les liens au survol */
 }
 
 [data-theme="dark"] input[type="time"],
