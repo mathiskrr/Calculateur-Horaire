@@ -1,9 +1,8 @@
 // Eléments du DOM fréquemment utilisés
-// Ces variables stockent les références aux éléments du DOM pour éviter d'avoir à les rechercher à chaque fois.
 const heureArriveeElem = document.getElementById("heureArrivee");
 const heurePauseElem = document.getElementById("heurePause");
 const heureRepriseElem = document.getElementById("heureReprise");
-const dureeTravailElem = document.getElementById("dureeTravail");
+const dureeTravailElem = document.getElementById("dureeTravail"); // Ce sera maintenant une chaîne au format "HH:mm"
 const resultatElem = document.getElementById("resultat");
 const historiqueElem = document.getElementById("historique");
 
@@ -14,8 +13,15 @@ versionElem.id = "appVersion";
 versionElem.textContent = "Version " + appVersion + " - " + "Oct 2023";
 document.body.appendChild(versionElem);
 
+// Fonction pour formater la durée en un format lisible
+const formatDuration = (duration) => {
+  const [hours, minutes] = duration.split(":");
+  return `${parseInt(hours, 10)} heure(s) ${
+    parseInt(minutes, 10) > 0 ? parseInt(minutes, 10) + " minute(s)" : ""
+  }`;
+};
+
 // Fonction utilitaire pour convertir une heure en objet Date
-// Cette fonction transforme une chaîne de caractères représentant une heure (sous la forme HH:MM) en un objet Date.
 const convertToDateTime = (heureStr) => {
   const currentDate = new Date();
   const [hour, minute] = heureStr.split(":");
@@ -44,11 +50,11 @@ themeButton.addEventListener("click", () => {
   if (document.documentElement.getAttribute("data-theme") === "dark") {
     document.documentElement.removeAttribute("data-theme");
     themeButton.textContent = "Mode sombre";
-    localStorage.removeItem("theme-mode"); // Supprimez le mode du localStorage
+    localStorage.removeItem("theme-mode");
   } else {
     document.documentElement.setAttribute("data-theme", "dark");
     themeButton.textContent = "Mode clair";
-    localStorage.setItem("theme-mode", "dark"); // Enregistrez le mode sombre dans le localStorage
+    localStorage.setItem("theme-mode", "dark");
   }
 });
 
@@ -58,21 +64,24 @@ document.getElementById("calculButton").addEventListener("click", () => {
   const heureArrivee = heureArriveeElem.value;
   const heurePause = heurePauseElem.value;
   const heureReprise = heureRepriseElem.value;
-  const dureeTravail = parseFloat(dureeTravailElem.value);
+  const dureeTravail = dureeTravailElem.value; // Ce sera maintenant une chaîne au format "HH:mm"
+
+  // Conversion de la durée de travail en minutes totales
+  const [hours, minutes] = dureeTravail.split(":");
+  const dureeTravailMinutes = parseInt(hours, 10) * 60 + parseInt(minutes, 10);
 
   // Vérification de la validité des entrées
   if (
     !heureArrivee ||
     !heurePause ||
     !heureReprise ||
-    isNaN(dureeTravail) ||
-    dureeTravail <= 0 ||
-    dureeTravail > 12
+    dureeTravailMinutes <= 0 ||
+    dureeTravailMinutes > 12 * 60
   ) {
     Swal.fire({
       icon: "error",
       title: "Erreur",
-      text: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 et 12 heures.",
+      text: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.",
     });
     return;
   }
@@ -115,11 +124,11 @@ document.getElementById("calculButton").addEventListener("click", () => {
 
   // Calcul du temps travaillé avant la pause
   const totalMinutes = (heurePauseObj - heureArriveeObj) / (1000 * 60);
-  const heuresTravailRestant = dureeTravail - totalMinutes / 60;
+  const heuresTravailRestant = dureeTravailMinutes - totalMinutes;
 
   // Calcul de l'heure de fin de travail
   const FinCalcul = new Date(
-    heureRepriseObj.getTime() + heuresTravailRestant * 60 * 60 * 1000
+    heureRepriseObj.getTime() + heuresTravailRestant * 60 * 1000
   );
 
   // Formatage de l'heure de fin pour l'affichage
@@ -132,12 +141,16 @@ document.getElementById("calculButton").addEventListener("click", () => {
   resultatElem.style.opacity = 0;
   setTimeout(() => {
     resultatElem.style.opacity = 1;
-    resultatElem.innerHTML = `Vous devez finir à ${heureFinFormat} pour travailler ${dureeTravail} heures au total.`;
+    resultatElem.innerHTML = `Vous devez finir à ${heureFinFormat} pour travailler ${formatDuration(
+      dureeTravail
+    )} au total.`; // Utilisation de la fonction de formatage ici
   }, 50);
 
   // Ajout du résultat à la liste de l'historique
   const formattedDate = new Date().toLocaleDateString();
-  const texteHistorique = `${formattedDate} - Durée de travail : ${dureeTravail}h, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin de la journée à ${heureFinFormat}`;
+  const texteHistorique = `${formattedDate} - Durée de travail : ${formatDuration(
+    dureeTravail
+  )}, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin de la journée à ${heureFinFormat}`; // Utilisation de la fonction de formatage ici
   const li = document.createElement("li");
   li.textContent = texteHistorique;
   historiqueElem.appendChild(li);

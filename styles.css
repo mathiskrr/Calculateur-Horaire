@@ -130,7 +130,7 @@ button:hover {
 
 /* Conteneur pour centrer le contenu et limiter sa largeur */
 .container {
-  max-width: 827px; /* vous pouvez ajuster cette valeur selon vos préférences */
+  max-width: 962px; /* vous pouvez ajuster cette valeur selon vos préférences */
   margin: 0 auto;
   padding: 0 20px; /* un peu de padding pour éviter que le contenu touche les bords sur les petits écrans */
 }

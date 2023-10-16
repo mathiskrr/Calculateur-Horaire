@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <title>Calculateur Horaire</title>
@@ -33,15 +33,7 @@
       <br />
 
       <label for="dureeTravail">Durée de travail (en heures) :</label>
-      <input
-        type="number"
-        id="dureeTravail"
-        min="1"
-        max="12"
-        value="8"
-        placeholder="8"
-        required
-      />
+      <input type="time" id="dureeTravail" value="08:00" required />
       <br />
 
       <button id="calculButton">Calculer</button>
@@ -55,7 +47,9 @@
     </div>
     <div id="credits">
       • Powered by HTML, CSS and Javascript <br />• Design by
-      <a href="https://github.com/mathiskrr" target="_blank">mathiskrr</a>
+      <a href="https://github.com/mathiskrr" rel="noopener" target="_blank"
+        >mathiskrr</a
+      >
     </div>
 
     <script src="script.js"></script>
