@@ -26,6 +26,28 @@
   --link-color: #4f9dff;
 }
 
+.delete-btn {
+  background-color: transparent; /* Fond transparent */
+  color: red; /* Couleur du X */
+  border: none; /* Pas de bordure */
+  cursor: pointer; /* Curseur en forme de main */
+  font-weight: bold; /* Rendre le X gras */
+  font-size: 1.5em; /* Taille du X */
+  margin-right: 10px; /* Espace entre le bouton et le texte */
+  margin-top: 0px;
+  vertical-align: middle; /* Alignement vertical */
+}
+
+.delete-btn:focus {
+  outline: none; /* Supprimer la bordure de focus */
+}
+
+.list-item-container {
+  display: flex; /* Utiliser Flexbox */
+  align-items: center; /* Centrer verticalement les éléments à l'intérieur */
+  justify-content: flex-start; /* Aligner les éléments à gauche */
+}
+
 /* Style pour les liens */
 a {
   color: var(--link-color, blue); /* couleur par défaut pour le mode clair */

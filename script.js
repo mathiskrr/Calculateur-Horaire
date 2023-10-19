@@ -58,6 +58,59 @@ themeButton.addEventListener("click", () => {
   }
 });
 
+// Fonction pour ajouter une entrée à l'historique avec un bouton de suppression
+function ajouterEntreeHistorique(texte) {
+  const li = document.createElement("li");
+  const container = document.createElement("div"); // Conteneur pour aligner le bouton et le texte
+  container.className = "list-item-container"; // Utiliser la classe CSS pour le style
+  // Création du bouton de suppression
+  const supprimerBtn = document.createElement("button");
+  supprimerBtn.textContent = "X"; // X au lieu du texte "Supprimer"
+  supprimerBtn.className = "delete-btn"; // Appliquer la classe CSS
+  supprimerBtn.onclick = function () {
+    // Confirmation avant suppression
+    Swal.fire({
+      title: "Êtes-vous sûr?",
+      text: "Vous ne pourrez pas revenir en arrière !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Suppression de l'entrée de l'UI
+        li.remove();
+
+        // Suppression de l'entrée du localStorage
+        const historiqueArr =
+          JSON.parse(localStorage.getItem("historiqueArr")) || [];
+        const index = historiqueArr.indexOf(texte);
+        if (index > -1) {
+          historiqueArr.splice(index, 1);
+        }
+        localStorage.setItem("historiqueArr", JSON.stringify(historiqueArr));
+
+        // Affichage de l'alerte de confirmation de suppression
+        Swal.fire(
+          "Supprimé!",
+          "Votre enregistrement a été supprimé.",
+          "success"
+        );
+      }
+    });
+  };
+
+  // Ajout du bouton et du texte au conteneur
+  container.appendChild(supprimerBtn); // Le bouton d'abord pour qu'il apparaisse à gauche
+  container.appendChild(document.createTextNode(texte)); // Utiliser createTextNode pour éviter des problèmes d'espacement
+
+  // Ajout du conteneur à l'élément de la liste
+  li.appendChild(container);
+  historiqueElem.appendChild(li);
+}
+
 // Gestionnaire d'événements pour le bouton de calcul
 document.getElementById("calculButton").addEventListener("click", () => {
   // Récupération des valeurs des champs du formulaire
@@ -151,9 +204,9 @@ document.getElementById("calculButton").addEventListener("click", () => {
   const texteHistorique = `${formattedDate} - Durée de travail : ${formatDuration(
     dureeTravail
   )}, Arrivée à ${heureArrivee}, Pause à ${heurePause}, Reprise à ${heureReprise} => Fin de la journée à ${heureFinFormat}`; // Utilisation de la fonction de formatage ici
-  const li = document.createElement("li");
-  li.textContent = texteHistorique;
-  historiqueElem.appendChild(li);
+
+  // Utilisation de la fonction pour ajouter une entrée à l'historique
+  ajouterEntreeHistorique(texteHistorique);
 
   // Enregistrement du résultat dans le localStorage pour une persistance entre les sessions
   const historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
@@ -164,11 +217,7 @@ document.getElementById("calculButton").addEventListener("click", () => {
 // Au chargement du document, récupération et affichage de l'historique depuis le localStorage
 document.addEventListener("DOMContentLoaded", () => {
   const historiqueArr = JSON.parse(localStorage.getItem("historiqueArr")) || [];
-  historiqueArr.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    historiqueElem.appendChild(li);
-  });
+  historiqueArr.forEach(ajouterEntreeHistorique); // Utilisation de la nouvelle fonction ici
 });
 
 // Gestionnaire d'événements pour le bouton d'effacement de l'historique
@@ -185,18 +234,28 @@ document.getElementById("clearHistoryButton").addEventListener("click", () => {
     return;
   }
 
-  // Suppression de l'historique du localStorage
-  localStorage.removeItem("historiqueArr");
-
-  // Effacement de la liste d'historique à l'écran
-  while (historiqueElem.firstChild) {
-    historiqueElem.removeChild(historiqueElem.firstChild);
-  }
-
-  // Notification à l'utilisateur que l'historique a été effacé
+  // Confirmation avant suppression
   Swal.fire({
-    icon: "success",
-    title: "Historique supprimé",
-    text: "Votre historique a été effacé.",
+    title: "Êtes-vous sûr?",
+    text: "Vous ne pourrez pas revenir en arrière !",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Oui",
+    cancelButtonText: "Non",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Suppression de l'historique du localStorage
+      localStorage.removeItem("historiqueArr");
+
+      // Effacement de la liste d'historique à l'écran
+      while (historiqueElem.firstChild) {
+        historiqueElem.removeChild(historiqueElem.firstChild);
+      }
+
+      // Notification à l'utilisateur que l'historique a été effacé
+      Swal.fire("Supprimé!", "Votre historique a été supprimé.", "success");
+    }
   });
 });
