@@ -24,6 +24,7 @@
   </head>
 
   <body>
+    <button id="themeToggleButton"><img src="" alt=""></button>
     <div class="header-container">
       <img src="img/logo.png" alt="Logo Application" id="headerImage" />
       <h1>Calculateur Horaire</h1>
@@ -33,23 +34,24 @@
       déjeuner pour calculer votre heure de fin de journée.
     </p>
     <div class="container">
-      <label for="heureArrivee">Heure d'arrivée :</label>
-      <input type="time" id="heureArrivee" placeholder="hh:mm" required />
-      <br />
-
-      <label for="heurePause">Heure de pause déjeuner :</label>
-      <input type="time" id="heurePause" placeholder="hh:mm" required />
-      <br />
-
-      <label for="heureReprise"
+      <div class="wrapper">
+        <label for="heureArrivee">Heure d'arrivée :</label>
+        <input type="time" id="heureArrivee" placeholder="hh:mm" required />
+      </div>
+      <div class="wrapper">
+        <label for="heurePause">Heure de pause déjeuner :</label>
+        <input type="time" id="heurePause" placeholder="hh:mm" required />
+      </div>
+      <div class="wrapper">
+        <label for="heureReprise"
         >Heure de reprise après la pause déjeuner :</label
       >
       <input type="time" id="heureReprise" placeholder="hh:mm" required />
-      <br />
-
-      <label for="dureeTravail">Durée de travail (en heures) :</label>
-      <input type="time" id="dureeTravail" value="08:00" required />
-      <br />
+      </div>
+      <div class="wrapper">
+        <label for="dureeTravail">Durée de travail (en heures) :</label>
+        <input type="time" id="dureeTravail" value="08:00" required />
+      </div>
 
       <button id="calculButton">Calculer</button>
 
@@ -60,12 +62,15 @@
 
       <ul id="historique"></ul>
     </div>
-    <div id="credits">
-      • Powered by HTML, CSS and Javascript <br />• Design by
-      <a href="https://github.com/mathiskrr" rel="noopener" target="_blank"
-        >mathiskrr</a
-      >
-    </div>
+    <footer>
+      <div id="credits">
+        <div id="appVersion"></div>
+        Powered by HTML, CSS and Javascript <br />Design by
+        <a href="https://github.com/mathiskrr" rel="noopener" target="_blank"
+          >mathiskrr</a
+        >
+      </div>
+    </footer>
 
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
