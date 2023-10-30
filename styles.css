@@ -125,7 +125,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin: 25px 0;
   transition: background-color 0.3s;
   margin-bottom: 0px;
 }
@@ -155,6 +154,9 @@ button:hover {
   max-width: 962px; /* vous pouvez ajuster cette valeur selon vos préférences */
   margin: 0 auto;
   padding: 0 20px; /* un peu de padding pour éviter que le contenu touche les bords sur les petits écrans */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #historique li {
@@ -181,17 +183,7 @@ button:hover {
   }
 }
 
-#themeToggleButton {
-  position: fixed; /* Position fixe par rapport à la fenêtre */
-  bottom: 20px; /* 20px depuis le bas de la fenêtre */
-  left: 20px; /* 20px depuis le côté gauche de la fenêtre */
-  z-index: 1000; /* Assurez-vous qu'il apparaît au-dessus des autres éléments */
-}
-
 #appVersion {
-  position: fixed; /* Position fixe par rapport à la fenêtre */
-  bottom: 50px; /* 10px depuis le bas de la fenêtre */
-  right: 10px; /* 10px depuis le côté droit de la fenêtre */
   font-size: 12px; /* Taille de police plus petite pour la version */
   color: var(
     --text-color
@@ -200,17 +192,18 @@ button:hover {
 }
 
 #credits {
-  position: fixed; /* Position fixe par rapport à la fenêtre */
-  bottom: 20px; /* 30px depuis le bas de la fenêtre */
-  right: 10px; /* 10px depuis le côté droit de la fenêtre */
   font-size: 12px; /* Taille de police plus petite pour les crédits */
-  text-align: right;
   color: var(
     --text-color
   ); /* Utilisation de la couleur de texte définie pour le thème */
-  z-index: 998; /* Juste en dessous de la version et du bouton de mode sombre */
 }
-
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px 10px 20px;
+}
 .header-container {
   display: flex;
   align-items: center; /* aligne verticalement les éléments au centre */
@@ -239,4 +232,21 @@ button:hover {
     font-size: 14px;
     padding: 8px 24px;
   }
+}
+#calculButton {
+  margin-top: 10px;
+}
+#themeToggleButton {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+#themeToggleButton > img {
+  height: 100%;
 }
