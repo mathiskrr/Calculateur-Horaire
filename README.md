@@ -4,13 +4,13 @@ Le Calculateur Horaire est une application web simple qui vous permet de calcule
 
 ## Capture d'écran de l'application
 
-![](http://www.image-heberg.fr/files/16971869632617304067.png)
+![](http://www.image-heberg.fr/files/17066907692050930611.png)
 
 ## Comment ça fonctionne ?
 
 Entrez vos heures :
 
-![](http://www.image-heberg.fr/files/16971035833978493863.png)
+![](http://www.image-heberg.fr/files/17066908912924782162.png)
 
 Dans les champs prévus, entrez votre heure d'arrivée, votre heure de pause déjeuner, votre heure de reprise après la pause déjeuner et le nombre d'heures que vous devez travailler au format "hh:mm". Par exemple, "07:40" pour 7 heures et 40 minutes.
 
@@ -19,14 +19,22 @@ Cliquez sur le bouton "Calculer" :
 ![](http://www.image-heberg.fr/files/16971035631106939290.png)
 
 Après avoir saisi vos heures, cliquez sur le bouton "Calculer".
-Résultat : ![](http://www.image-heberg.fr/files/16971036039337526.png)
+Résultat : ![](http://www.image-heberg.fr/files/17066909113692856385.png)
 
 L'application calculera automatiquement l'heure à laquelle vous devez finir votre journée pour atteindre votre total d'heures de travail.
 L'heure de fin calculée s'affichera sous le bouton "Calculer".
 
 Un historique a également été mis en place pour avoir un suivi des horaires. Il est stocké dans le localStorage de votre navigateur et peut être vidé avec le bouton "Supprimer l'historique".
 
-![](http://www.image-heberg.fr/files/1697186981198327691.png)
+![](http://www.image-heberg.fr/files/1706690962969156428.png)
+
+Vous avez également la possibilité de passer l'application en mode sombre pour le confort de vos yeux en cliquant sur la Lune en haut à gauche de la page.
+
+![](http://www.image-heberg.fr/files/17066910362762453609.png)
+
+Et vous pouvez bien évidemment revenir au mode clair en cliquant cette fois-ci sur le Soleil.
+
+![](http://www.image-heberg.fr/files/17066910762547019316.png)
 
 ## Exemple d'utilisation
 
