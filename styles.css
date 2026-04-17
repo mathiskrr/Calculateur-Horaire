@@ -1,10 +1,7 @@
 :root {
   --bg-color: #f3f7ff;
-  --bg-gradient: radial-gradient(
-      circle at 15% 20%,
-      #deebff 0%,
-      rgba(222, 235, 255, 0) 38%
-    ),
+  --bg-gradient:
+    radial-gradient(circle at 15% 20%, #deebff 0%, rgba(222, 235, 255, 0) 38%),
     radial-gradient(circle at 85% 5%, #d9f9ef 0%, rgba(217, 249, 239, 0) 30%),
     linear-gradient(135deg, #f8fbff 0%, #eef2ff 100%);
   --text-color: #1f2937;
@@ -25,9 +22,10 @@
   --link-color: #1d4ed8;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --bg-color: #070c19;
-  --bg-gradient: radial-gradient(
+  --bg-gradient:
+    radial-gradient(
       circle at 20% 20%,
       rgba(45, 68, 128, 0.35) 0%,
       rgba(45, 68, 128, 0) 35%
@@ -62,11 +60,12 @@
 
 body {
   margin: 0;
-  height: 100svh;
-  overflow: hidden;
+  min-height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: "Inter", "Segoe UI", sans-serif;
   color: var(--text-color);
   background-color: var(--bg-color);
   background-image: var(--bg-gradient);
@@ -94,11 +93,10 @@ a:hover {
   max-width: 1140px;
   width: 100%;
   flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   padding-top: 0.6rem !important;
-  padding-bottom: 0.35rem !important;
+  padding-bottom: 0.75rem !important;
 }
 
 .floating-actions {
@@ -134,8 +132,6 @@ a:hover {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.05rem;
-  flex: 1;
-  min-height: 0;
 }
 
 .glass-card {
@@ -145,15 +141,11 @@ a:hover {
   border-radius: 22px;
   box-shadow: var(--shadow-sm);
   padding: 1.05rem;
-  min-height: 0;
 }
 
 .history-card {
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  height: 100%;
-  overflow: hidden;
 }
 
 .section-title {
@@ -176,8 +168,8 @@ label {
   margin-bottom: 0.45rem;
 }
 
-input[type='time'],
-input[type='number'] {
+input[type="time"],
+input[type="number"] {
   width: 100%;
   border-radius: 14px;
   border: 1px solid var(--input-border);
@@ -186,12 +178,14 @@ input[type='number'] {
   font-size: 1rem;
   line-height: 1;
   padding: 0.85rem 0.9rem;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease,
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
     transform 0.15s ease;
 }
 
-input[type='time']:focus,
-input[type='number']:focus {
+input[type="time"]:focus,
+input[type="number"]:focus {
   outline: none;
   border-color: var(--input-focus);
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--input-focus) 25%, transparent);
@@ -203,7 +197,9 @@ button {
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease,
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
     background-color 0.2s ease;
 }
 
@@ -261,10 +257,6 @@ button:active {
 
 #historique {
   list-style: none;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 0;
   margin: 0;
 }
@@ -357,15 +349,31 @@ footer {
 @media (min-width: 992px) {
   .content-grid {
     grid-template-columns: 1.05fr 0.95fr;
-    align-items: stretch;
-    height: 100%;
-    min-height: 0;
+    align-items: start;
   }
 
-  .form-card,
   .history-card {
-    height: 100%;
-    min-height: 0;
+    max-height: 620px;
+    overflow: hidden;
+  }
+
+  #historique {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+@media (min-width: 992px) and (max-height: 820px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-card {
+    max-height: none;
+  }
+
+  #historique {
+    max-height: 320px;
   }
 }
 
@@ -473,8 +481,8 @@ footer {
     font-size: 0.95rem;
   }
 
-  input[type='time'],
-  input[type='number'] {
+  input[type="time"],
+  input[type="number"] {
     font-size: 1rem;
     padding: 0.82rem 0.9rem;
   }
