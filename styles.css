@@ -413,18 +413,13 @@ footer {
   .content-grid {
     grid-template-columns: 1.08fr 0.92fr;
     align-items: stretch;
+    margin-bottom: 8px;
   }
 }
 
 .form-card,
 .history-card {
   height: 100%;
-}
-@media (min-width: 992px) {
-  .form-card,
-  .history-card {
-    align-self: start;
-  }
 }
 
 /* Très grande largeur */
@@ -476,10 +471,6 @@ footer {
     border-radius: 20px;
     padding: 1rem;
     margin-bottom: 0.9rem !important;
-  }
-
-  .content-grid {
-    margin-bottom: 8px;
   }
 
   .hero-card > div {
