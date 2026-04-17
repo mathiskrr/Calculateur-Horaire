@@ -478,6 +478,10 @@ footer {
     margin-bottom: 0.9rem !important;
   }
 
+  .content-grid {
+    margin-bottom: 8px;
+  }
+
   .hero-card > div {
     align-items: flex-start !important;
     justify-content: flex-start !important;
