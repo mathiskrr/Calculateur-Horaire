@@ -20,6 +20,23 @@
   --shadow-lg: 0 24px 60px rgba(47, 111, 246, 0.16);
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.08);
   --link-color: #1d4ed8;
+
+  --shell-max-width: 1180px;
+  --hero-radius: 24px;
+  --card-radius: 22px;
+  --hero-padding: clamp(0.95rem, 1.4vw, 1.35rem);
+  --card-padding: clamp(0.9rem, 1.2vw, 1.05rem);
+  --grid-gap: clamp(0.75rem, 1vw, 1rem);
+  --section-title-size: clamp(1rem, 1vw, 1.08rem);
+  --label-size: clamp(0.86rem, 0.8vw, 0.9rem);
+  --input-font-size: clamp(0.94rem, 0.9vw, 1rem);
+  --input-padding-y: clamp(0.68rem, 1vw, 0.82rem);
+  --input-padding-x: 0.9rem;
+  --button-padding-y: clamp(0.72rem, 0.95vw, 0.85rem);
+  --result-min-height: 52px;
+  --history-max-height: 420px;
+  --top-actions-size: 44px;
+  --lang-width: 52px;
 }
 
 [data-theme="dark"] {
@@ -58,18 +75,24 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   font-family: "Inter", "Segoe UI", sans-serif;
   color: var(--text-color);
   background-color: var(--bg-color);
   background-image: var(--bg-gradient);
   background-attachment: fixed;
 }
+
 h1,
 h2,
 p,
@@ -88,14 +111,13 @@ a:hover {
 }
 
 .app-shell {
-  max-width: 1140px;
+  max-width: var(--shell-max-width);
   width: 100%;
   flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.2rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.5rem !important;
 }
 
 .floating-actions {
@@ -111,35 +133,43 @@ a:hover {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   backdrop-filter: blur(8px);
-  border-radius: 24px;
+  border-radius: var(--hero-radius);
   box-shadow: var(--shadow-lg);
-  padding: clamp(1rem, 2vw, 2rem);
+  padding: var(--hero-padding);
+  margin-bottom: clamp(0.8rem, 1vw, 1rem) !important;
 }
 
 .hero-subtitle {
   color: var(--muted-text);
-  font-size: 0.98rem;
+  font-size: clamp(0.9rem, 0.95vw, 0.98rem);
+  line-height: 1.4;
 }
 
 #headerImage {
-  width: 56px;
-  height: 56px;
+  width: clamp(46px, 3.5vw, 56px);
+  height: clamp(46px, 3.5vw, 56px);
   object-fit: contain;
+}
+
+h1 {
+  font-size: clamp(1.85rem, 3vw, 2.45rem);
+  line-height: 1.05;
 }
 
 .content-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.05rem;
+  gap: var(--grid-gap);
+  align-items: start;
 }
 
 .glass-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   backdrop-filter: blur(8px);
-  border-radius: 22px;
+  border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
-  padding: 1.05rem;
+  padding: var(--card-padding);
 }
 
 .history-card {
@@ -148,23 +178,23 @@ a:hover {
 }
 
 .section-title {
-  font-size: 1.1rem;
+  font-size: var(--section-title-size);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
 }
 
 .wrapper {
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.68rem, 0.9vw, 0.95rem);
 }
 
 label {
   display: block;
-  font-size: 0.9rem;
+  font-size: var(--label-size);
   font-weight: 600;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.38rem;
 }
 
 input[type="time"],
@@ -174,9 +204,9 @@ input[type="number"] {
   border: 1px solid var(--input-border);
   background: var(--input-bg);
   color: var(--text-color);
-  font-size: 1rem;
+  font-size: var(--input-font-size);
   line-height: 1;
-  padding: 0.85rem 0.9rem;
+  padding: var(--input-padding-y) var(--input-padding-x);
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,
@@ -214,13 +244,14 @@ button:active {
   width: 100%;
   background: var(--primary);
   color: #fff;
-  padding: 0.85rem 1rem;
-  margin-top: 0.35rem;
+  padding: var(--button-padding-y) 1rem;
+  margin-top: 0.2rem;
   box-shadow: 0 12px 24px color-mix(in oklab, var(--primary) 35%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
+  min-height: 46px;
 }
 
 .primary-action:hover {
@@ -236,6 +267,7 @@ button:active {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
+  min-height: 42px;
 }
 
 .secondary-action:hover {
@@ -243,21 +275,25 @@ button:active {
 }
 
 #resultat {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   border-radius: 14px;
   background: color-mix(in oklab, var(--primary) 10%, var(--card-bg));
   border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent);
-  padding: 0.9rem;
+  padding: 0.85rem;
   font-weight: 600;
-  min-height: 60px;
+  min-height: var(--result-min-height);
   transition: opacity 0.25s ease;
   text-align: center;
+  line-height: 1.35;
 }
 
 #historique {
   list-style: none;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 0;
   margin: 0;
+  max-height: var(--history-max-height);
 }
 
 #historique li {
@@ -265,7 +301,7 @@ button:active {
   border-radius: 12px;
   padding: 0.5rem 0.55rem;
   margin-bottom: 0.55rem;
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   background: color-mix(in oklab, var(--card-bg) 84%, transparent);
 }
 
@@ -303,9 +339,9 @@ button:active {
 }
 
 #themeToggleButton,
-#languageToggleButton {
-  width: 44px;
-  height: 44px;
+#languageToggleButton,
+#contactButton {
+  height: var(--top-actions-size);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -316,235 +352,28 @@ button:active {
   color: var(--text-color);
 }
 
-#themeToggleButton > img {
-  width: 24px;
-  height: 24px;
+#themeToggleButton,
+#contactButton {
+  width: var(--top-actions-size);
 }
 
 #languageToggleButton {
-  width: 52px;
+  width: var(--lang-width);
   font-size: 1.2rem;
   letter-spacing: 0;
 }
 
+#themeToggleButton > img,
 #languageToggleButton > img {
   width: 24px;
   height: 24px;
+}
+
+#languageToggleButton > img {
   border-radius: 50%;
 }
 
-footer {
-  text-align: center;
-  margin-top: auto;
-  padding: 0 1rem 0.2rem;
-}
-
-#credits,
-#appVersion {
-  color: var(--muted-text);
-  font-size: 0.82rem;
-}
-
-@media (min-width: 992px) {
-  .content-grid {
-    grid-template-columns: 1.05fr 0.95fr;
-    align-items: stretch;
-    height: 100%;
-    min-height: 0;
-  }
-
-  .form-card,
-  .history-card {
-    height: 100%;
-    min-height: 0;
-  }
-
-  .hero-card {
-    padding: 1.1rem 1.4rem;
-    margin-bottom: 0.9rem !important;
-  }
-
-  .glass-card {
-    padding: 0.95rem;
-  }
-
-  .section-title {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .wrapper {
-    margin-bottom: 0.75rem;
-  }
-
-  label {
-    font-size: 0.88rem;
-    margin-bottom: 0.35rem;
-  }
-
-  input[type="time"],
-  input[type="number"] {
-    padding: 0.72rem 0.85rem;
-    font-size: 0.96rem;
-  }
-
-  .primary-action {
-    padding: 0.78rem 0.95rem;
-    margin-top: 0.2rem;
-  }
-
-  #resultat {
-    margin-top: 0.75rem;
-    min-height: 52px;
-    padding: 0.75rem;
-    font-size: 0.94rem;
-  }
-
-  #historique li {
-    padding: 0.45rem 0.5rem;
-    margin-bottom: 0.45rem;
-    font-size: 0.9rem;
-  }
-
-  footer {
-    padding: 0 1rem 0.1rem;
-  }
-
-  #credits,
-  #appVersion {
-    font-size: 0.78rem;
-  }
-}
-
-@media (min-width: 992px) and (max-height: 900px) {
-  .floating-actions {
-    top: 12px;
-    right: 12px;
-    gap: 0.4rem;
-  }
-
-  #contactButton,
-  #themeToggleButton,
-  #languageToggleButton {
-    width: 40px;
-    height: 40px;
-  }
-
-  #languageToggleButton {
-    width: 46px;
-  }
-
-  #headerImage {
-    width: 48px;
-    height: 48px;
-  }
-
-  h1 {
-    font-size: 2rem;
-    line-height: 1.05;
-  }
-
-  .hero-subtitle {
-    font-size: 0.92rem;
-  }
-
-  .content-grid {
-    gap: 0.8rem;
-  }
-
-  .hero-card {
-    padding: 0.95rem 1.2rem;
-    border-radius: 20px;
-  }
-
-  .glass-card {
-    padding: 0.85rem;
-    border-radius: 18px;
-  }
-
-  .wrapper {
-    margin-bottom: 0.65rem;
-  }
-
-  label {
-    font-size: 0.84rem;
-    margin-bottom: 0.28rem;
-  }
-
-  input[type="time"],
-  input[type="number"] {
-    padding: 0.64rem 0.8rem;
-    font-size: 0.92rem;
-    border-radius: 12px;
-  }
-
-  .primary-action,
-  .secondary-action {
-    min-height: 40px;
-  }
-
-  .primary-action {
-    font-size: 0.94rem;
-  }
-
-  .secondary-action {
-    font-size: 0.82rem;
-    padding: 0.45rem 0.65rem;
-  }
-
-  #resultat {
-    min-height: 46px;
-    padding: 0.65rem;
-    margin-top: 0.65rem;
-  }
-
-  #historique li {
-    padding: 0.38rem 0.45rem;
-    margin-bottom: 0.38rem;
-    font-size: 0.86rem;
-  }
-}
-
-@media (min-width: 992px) and (max-height: 760px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
-  }
-
-  .hero-card {
-    margin-bottom: 0.7rem !important;
-  }
-
-  .history-card {
-    display: none;
-  }
-}
-
-@media (min-width: 992px) and (max-height: 820px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .history-card {
-    max-height: none;
-  }
-
-  #historique {
-    max-height: 320px;
-  }
-}
-
 #contactButton {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-sm);
-  color: var(--text-color);
   font-size: 1.1rem;
 }
 
@@ -552,17 +381,142 @@ footer {
   background: var(--secondary);
 }
 
-@media (max-width: 768px) {
-  body {
-    height: auto;
-    min-height: 100svh;
-    overflow-y: auto;
-    overflow-x: hidden;
+footer {
+  text-align: center;
+  margin-top: auto;
+  padding: 0.25rem 1rem 0.2rem;
+}
+
+#credits,
+#appVersion {
+  color: var(--muted-text);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+/* Desktop large + hauteur correcte */
+@media (min-width: 1200px) and (min-height: 820px) {
+  .content-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: start;
+  }
+
+  #historique {
+    max-height: 430px;
+  }
+}
+
+/* Laptops classiques */
+@media (min-width: 992px) and (max-width: 1399px) {
+  :root {
+    --shell-max-width: 1080px;
+    --hero-padding: 1rem;
+    --card-padding: 0.9rem;
+    --grid-gap: 0.8rem;
+    --section-title-size: 1rem;
+    --label-size: 0.86rem;
+    --input-font-size: 0.94rem;
+    --input-padding-y: 0.68rem;
+    --button-padding-y: 0.72rem;
+    --result-min-height: 48px;
+    --history-max-height: 320px;
   }
 
   .app-shell {
-    padding-top: 0.85rem !important;
-    padding-bottom: 0.75rem !important;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  .hero-card {
+    margin-bottom: 0.75rem !important;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 2.3vw, 2.2rem);
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .secondary-action {
+    font-size: 0.84rem;
+    padding: 0.48rem 0.68rem;
+  }
+
+  #credits,
+  #appVersion {
+    font-size: 0.76rem;
+  }
+}
+
+/* Laptops assez hauts -> 2 colonnes */
+@media (min-width: 992px) and (min-height: 760px) {
+  .content-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: start;
+  }
+}
+
+/* Laptops bas -> 1 colonne pour éviter la casse */
+@media (min-width: 992px) and (max-height: 759px) {
+  :root {
+    --shell-max-width: 1000px;
+    --hero-padding: 0.9rem;
+    --card-padding: 0.82rem;
+    --grid-gap: 0.7rem;
+    --section-title-size: 0.98rem;
+    --label-size: 0.84rem;
+    --input-font-size: 0.92rem;
+    --input-padding-y: 0.62rem;
+    --button-padding-y: 0.68rem;
+    --result-min-height: 44px;
+    --top-actions-size: 40px;
+    --lang-width: 46px;
+  }
+
+  .floating-actions {
+    top: 12px;
+    right: 12px;
+    gap: 0.4rem;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card {
+    border-radius: 20px;
+  }
+
+  .glass-card {
+    border-radius: 18px;
+  }
+
+  #historique {
+    max-height: 180px;
+  }
+
+  footer {
+    padding-top: 0.15rem;
+  }
+
+  #credits,
+  #appVersion {
+    font-size: 0.72rem;
+  }
+}
+
+/* Tablette */
+@media (max-width: 991px) {
+  body {
+    min-height: 100dvh;
+    overflow-y: auto;
+  }
+
+  .app-shell {
+    padding-top: 0.8rem !important;
+    padding-bottom: 0.7rem !important;
   }
 
   .floating-actions {
@@ -572,23 +526,14 @@ footer {
     gap: 0.4rem;
   }
 
-  #contactButton,
-  #languageToggleButton,
-  #themeToggleButton {
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-  }
-
-  #languageToggleButton {
-    width: 46px;
-    flex-basis: 46px;
+  :root {
+    --top-actions-size: 40px;
+    --lang-width: 46px;
   }
 
   .hero-card {
     border-radius: 20px;
     padding: 1rem;
-    margin-bottom: 0.9rem !important;
   }
 
   .hero-card > div {
@@ -598,26 +543,8 @@ footer {
     padding-right: 0;
   }
 
-  #headerImage {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-  }
-
-  h1 {
-    font-size: 1.95rem;
-    line-height: 1.05;
-    word-break: break-word;
-  }
-
-  .hero-subtitle {
-    font-size: 0.95rem;
-    line-height: 1.45;
-    max-width: 100%;
-  }
-
   .content-grid {
-    gap: 0.9rem;
+    grid-template-columns: 1fr;
   }
 
   .glass-card {
@@ -653,20 +580,38 @@ footer {
     min-height: auto;
     padding: 0.85rem;
     font-size: 0.96rem;
-    line-height: 1.4;
-  }
-
-  .history-card {
-    height: auto;
-    max-height: none;
-    overflow: visible;
   }
 
   #historique {
     max-height: 260px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 0.15rem;
+    padding-right: 0.1rem;
+  }
+
+  footer {
+    margin-top: 0.9rem;
+    padding: 0 0.75rem 0.6rem;
+  }
+
+  #credits,
+  #appVersion {
+    font-size: 0.88rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.95rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  #headerImage {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
   }
 
   #historique li {
@@ -681,17 +626,6 @@ footer {
   }
 
   .history-text {
-    line-height: 1.45;
-  }
-
-  footer {
-    margin-top: 0.9rem;
-    padding: 0 0.75rem 0.6rem;
-  }
-
-  #credits,
-  #appVersion {
-    font-size: 0.9rem;
     line-height: 1.45;
   }
 }
