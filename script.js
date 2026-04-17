@@ -9,7 +9,12 @@ const themeButton = document.getElementById( "themeToggleButton" );
 const languageButton = document.getElementById( "languageToggleButton" );
 const versionElem = document.getElementById( "appVersion" );
 
-const appVersion = "2.1";
+const appVersion = "2.2";
+const HISTORY_KEY = "historiqueArr";
+const LANGUAGE_KEY = "lang-mode";
+const THEME_KEY = "theme-mode";
+const LAST_RESULT_KEY = "last-result";
+
 const translations = {
   fr: {
     title: "Calculateur Horaire",
@@ -31,15 +36,15 @@ const translations = {
     invalidInputs: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.",
     invalidSchedule: "Vérifiez vos horaires ! L'heure d'arrivée doit être antérieure à l'heure de pause et l'heure de pause doit être antérieure à l'heure de reprise.",
     invalidBreak: "Vérifiez vos horaires ! Assurez-vous que la durée de pause est d'au moins 30 minutes et que les horaires sont cohérents.",
-    confirmTitle: "Êtes-vous sûr?",
-    confirmText: "Vous ne pourrez pas revenir en arrière !",
+    confirmTitle: "Êtes-vous sûr ?",
+    confirmDeleteEntry: "Cette entrée sera supprimée définitivement.",
+    confirmDeleteHistory: "Tout l'historique sera supprimé définitivement.",
     confirmYes: "Oui",
     confirmNo: "Non",
-    deletedTitle: "Supprimé!",
     deletedEntry: "Votre enregistrement a été supprimé.",
     deletedHistory: "Votre historique a été supprimé.",
     emptyHistory: "Il n'y a pas d'historique à supprimer.",
-    languageButton: "EN"
+    langAria: "Passer en anglais"
   },
   en: {
     title: "Work Hours Calculator",
@@ -62,24 +67,62 @@ const translations = {
     invalidSchedule: "Check your schedule! Start time must be before break time, and break time must be before resume time.",
     invalidBreak: "Check your schedule! Ensure break duration is at least 30 minutes and times are consistent.",
     confirmTitle: "Are you sure?",
-    confirmText: "You won’t be able to undo this!",
+    confirmDeleteEntry: "This entry will be permanently deleted.",
+    confirmDeleteHistory: "All history will be permanently deleted.",
     confirmYes: "Yes",
     confirmNo: "No",
-    deletedTitle: "Deleted!",
     deletedEntry: "Your entry has been deleted.",
     deletedHistory: "Your history has been deleted.",
     emptyHistory: "There is no history to delete.",
-    languageButton: "FR"
+    langAria: "Switch to French"
   }
 };
 
-const getLanguage = () => localStorage.getItem( "lang-mode" ) || "fr";
+const getLanguage = () => localStorage.getItem( LANGUAGE_KEY ) || "fr";
 let currentLanguage = getLanguage();
 
 const t = ( key ) => translations[ currentLanguage ][ key ];
 
+Notiflix.Notify.init( {
+  position: "right-top",
+  timeout: 3800,
+  clickToClose: true,
+  borderRadius: "10px",
+} );
+
+const showError = ( message ) => {
+  Notiflix.Notify.failure( `${ t( "errorTitle" ) } · ${ message }` );
+};
+
+const showSuccess = ( message ) => {
+  Notiflix.Notify.success( message );
+};
+
+const confirmAction = ( message, onConfirm ) => {
+  Notiflix.Confirm.show(
+    t( "confirmTitle" ),
+    message,
+    t( "confirmYes" ),
+    t( "confirmNo" ),
+    onConfirm,
+    () => {},
+    {
+      borderRadius: "14px",
+      width: "360px",
+      titleColor: "#1f2937",
+      okButtonBackground: "#2f6ff6",
+      cancelButtonBackground: "#94a3b8",
+    }
+  );
+};
+
 const updateVersionText = () => {
   versionElem.textContent = `Version ${ appVersion } - ${ t( "versionDate" ) }`;
+};
+
+const updateLanguageButtonUI = () => {
+  languageButton.textContent = currentLanguage === "fr" ? "🇫🇷" : "🇬🇧";
+  languageButton.setAttribute( "aria-label", t( "langAria" ) );
 };
 
 const applyTranslations = () => {
@@ -88,8 +131,10 @@ const applyTranslations = () => {
     const key = element.getAttribute( "data-i18n" );
     element.textContent = t( key );
   } );
-  languageButton.textContent = t( "languageButton" );
+  updateLanguageButtonUI();
   updateVersionText();
+  refreshResultFromStorage();
+  renderHistory();
 };
 
 // Fonction pour formater la durée en un format lisible
@@ -112,8 +157,76 @@ const convertToDateTime = ( heureStr ) => {
   );
 };
 
+const toHistoryText = ( entry ) => t( "historyTemplate" )(
+  entry.date,
+  formatDuration( entry.dureeTravail ),
+  entry.heureArrivee,
+  entry.heurePause,
+  entry.heureReprise,
+  entry.heureFin
+);
+
+const getHistoryEntries = () => {
+  const raw = JSON.parse( localStorage.getItem( HISTORY_KEY ) ) || [];
+  return raw.map( ( item ) => {
+    if ( typeof item === "string" ) {
+      return { legacyText: item };
+    }
+    return item;
+  } );
+};
+
+const saveHistoryEntries = ( entries ) => {
+  localStorage.setItem( HISTORY_KEY, JSON.stringify( entries ) );
+};
+
+const createHistoryItem = ( entry, index ) => {
+  const li = document.createElement( "li" );
+  const container = document.createElement( "div" );
+  container.className = "list-item-container";
+
+  const supprimerBtn = document.createElement( "button" );
+  supprimerBtn.textContent = "X";
+  supprimerBtn.className = "delete-btn";
+  supprimerBtn.onclick = function () {
+    confirmAction( t( "confirmDeleteEntry" ), () => {
+      const entries = getHistoryEntries();
+      entries.splice( index, 1 );
+      saveHistoryEntries( entries );
+      renderHistory();
+      showSuccess( t( "deletedEntry" ) );
+    } );
+  };
+
+  const text = entry.legacyText || toHistoryText( entry );
+
+  container.appendChild( supprimerBtn );
+  container.appendChild( document.createTextNode( text ) );
+
+  li.appendChild( container );
+  historiqueElem.appendChild( li );
+};
+
+const renderHistory = () => {
+  historiqueElem.innerHTML = "";
+  const entries = getHistoryEntries();
+  entries.forEach( ( entry, index ) => createHistoryItem( entry, index ) );
+};
+
+const saveLastResult = ( data ) => {
+  localStorage.setItem( LAST_RESULT_KEY, JSON.stringify( data ) );
+};
+
+const refreshResultFromStorage = () => {
+  const data = JSON.parse( localStorage.getItem( LAST_RESULT_KEY ) || "null" );
+  if ( !data ) {
+    return;
+  }
+  resultatElem.innerHTML = t( "resultTemplate" )( data.heureFin, formatDuration( data.dureeTravail ) );
+};
+
 // Vérifiez le mode stocké lors du chargement de la page
-const storedTheme = localStorage.getItem( "theme-mode" );
+const storedTheme = localStorage.getItem( THEME_KEY );
 if ( storedTheme ) {
   document.documentElement.setAttribute( "data-theme", storedTheme );
 }
@@ -125,62 +238,19 @@ themeButton.addEventListener( "click", () => {
   if ( document.documentElement.getAttribute( "data-theme" ) === "dark" ) {
     document.documentElement.removeAttribute( "data-theme" );
     themeButton.innerHTML = '<img src="img/mode-sombre.png" alt="">';
-    localStorage.removeItem( "theme-mode" );
+    localStorage.removeItem( THEME_KEY );
   } else {
     document.documentElement.setAttribute( "data-theme", "dark" );
     themeButton.innerHTML = '<img src="img/mode-clair.png" alt="">';
-    localStorage.setItem( "theme-mode", "dark" );
+    localStorage.setItem( THEME_KEY, "dark" );
   }
 } );
 
 languageButton.addEventListener( "click", () => {
   currentLanguage = currentLanguage === "fr" ? "en" : "fr";
-  localStorage.setItem( "lang-mode", currentLanguage );
+  localStorage.setItem( LANGUAGE_KEY, currentLanguage );
   applyTranslations();
 } );
-
-// Fonction pour ajouter une entrée à l'historique avec un bouton de suppression
-function ajouterEntreeHistorique ( texte ) {
-  const li = document.createElement( "li" );
-  const container = document.createElement( "div" );
-  container.className = "list-item-container";
-
-  const supprimerBtn = document.createElement( "button" );
-  supprimerBtn.textContent = "X";
-  supprimerBtn.className = "delete-btn";
-  supprimerBtn.onclick = function () {
-    Swal.fire( {
-      title: t( "confirmTitle" ),
-      text: t( "confirmText" ),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t( "confirmYes" ),
-      cancelButtonText: t( "confirmNo" ),
-    } ).then( ( result ) => {
-      if ( result.isConfirmed ) {
-        li.remove();
-
-        const historiqueArr =
-          JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
-        const index = historiqueArr.indexOf( texte );
-        if ( index > -1 ) {
-          historiqueArr.splice( index, 1 );
-        }
-        localStorage.setItem( "historiqueArr", JSON.stringify( historiqueArr ) );
-
-        Swal.fire( t( "deletedTitle" ), t( "deletedEntry" ), "success" );
-      }
-    } );
-  };
-
-  container.appendChild( supprimerBtn );
-  container.appendChild( document.createTextNode( texte ) );
-
-  li.appendChild( container );
-  historiqueElem.appendChild( li );
-}
 
 // Gestionnaire d'événements pour le bouton de calcul
 document.getElementById( "calculButton" ).addEventListener( "click", () => {
@@ -199,11 +269,7 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
     dureeTravailMinutes <= 0 ||
     dureeTravailMinutes > 12 * 60
   ) {
-    Swal.fire( {
-      icon: "error",
-      title: t( "errorTitle" ),
-      text: t( "invalidInputs" ),
-    } );
+    showError( t( "invalidInputs" ) );
     return;
   }
 
@@ -212,11 +278,7 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
   const heureRepriseObj = convertToDateTime( heureReprise );
 
   if ( heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj ) {
-    Swal.fire( {
-      icon: "error",
-      title: t( "errorTitle" ),
-      text: t( "invalidSchedule" ),
-    } );
+    showError( t( "invalidSchedule" ) );
     return;
   }
 
@@ -231,11 +293,7 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
     heureArriveeObj >= heurePauseObj ||
     heurePauseObj >= heureRepriseObj
   ) {
-    Swal.fire( {
-      icon: "error",
-      title: t( "errorTitle" ),
-      text: t( "invalidBreak" ),
-    } );
+    showError( t( "invalidBreak" ) );
     return;
   }
 
@@ -251,67 +309,50 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
     minute: "2-digit",
   } );
 
+  const resultPayload = {
+    heureFin: heureFinFormat,
+    dureeTravail,
+  };
+
   resultatElem.style.opacity = 0;
   setTimeout( () => {
     resultatElem.style.opacity = 1;
     resultatElem.innerHTML = t( "resultTemplate" )( heureFinFormat, formatDuration( dureeTravail ) );
   }, 50 );
+  saveLastResult( resultPayload );
 
-  const formattedDate = new Date().toLocaleDateString();
-  const texteHistorique = t( "historyTemplate" )(
-    formattedDate,
-    formatDuration( dureeTravail ),
+  const entry = {
+    date: new Date().toLocaleDateString(),
+    dureeTravail,
     heureArrivee,
     heurePause,
     heureReprise,
-    heureFinFormat
-  );
+    heureFin: heureFinFormat,
+  };
 
-  ajouterEntreeHistorique( texteHistorique );
-
-  const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
-  historiqueArr.push( texteHistorique );
-  localStorage.setItem( "historiqueArr", JSON.stringify( historiqueArr ) );
+  const entries = getHistoryEntries();
+  entries.push( entry );
+  saveHistoryEntries( entries );
+  renderHistory();
 } );
 
 // Au chargement du document, récupération et affichage de l'historique depuis le localStorage
 document.addEventListener( "DOMContentLoaded", () => {
   applyTranslations();
-  const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
-  historiqueArr.forEach( ajouterEntreeHistorique );
 } );
 
 // Gestionnaire d'événements pour le bouton d'effacement de l'historique
 document.getElementById( "clearHistoryButton" ).addEventListener( "click", () => {
-  const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
+  const historiqueArr = getHistoryEntries();
 
   if ( historiqueArr.length === 0 ) {
-    Swal.fire( {
-      icon: "error",
-      title: t( "errorTitle" ),
-      text: t( "emptyHistory" ),
-    } );
+    showError( t( "emptyHistory" ) );
     return;
   }
 
-  Swal.fire( {
-    title: t( "confirmTitle" ),
-    text: t( "confirmText" ),
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: t( "confirmYes" ),
-    cancelButtonText: t( "confirmNo" ),
-  } ).then( ( result ) => {
-    if ( result.isConfirmed ) {
-      localStorage.removeItem( "historiqueArr" );
-
-      while ( historiqueElem.firstChild ) {
-        historiqueElem.removeChild( historiqueElem.firstChild );
-      }
-
-      Swal.fire( t( "deletedTitle" ), t( "deletedHistory" ), "success" );
-    }
+  confirmAction( t( "confirmDeleteHistory" ), () => {
+    localStorage.removeItem( HISTORY_KEY );
+    historiqueElem.innerHTML = "";
+    showSuccess( t( "deletedHistory" ) );
   } );
 } );
