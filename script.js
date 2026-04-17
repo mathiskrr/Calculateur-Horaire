@@ -2,21 +2,101 @@
 const heureArriveeElem = document.getElementById( "heureArrivee" );
 const heurePauseElem = document.getElementById( "heurePause" );
 const heureRepriseElem = document.getElementById( "heureReprise" );
-const dureeTravailElem = document.getElementById( "dureeTravail" ); // Ce sera maintenant une chaîne au format "HH:mm"
+const dureeTravailElem = document.getElementById( "dureeTravail" );
 const resultatElem = document.getElementById( "resultat" );
 const historiqueElem = document.getElementById( "historique" );
 const themeButton = document.getElementById( "themeToggleButton" );
-const versionElem = document.getElementById( "appVersion" )
+const languageButton = document.getElementById( "languageToggleButton" );
+const versionElem = document.getElementById( "appVersion" );
 
-const appVersion = "2.0"; // Refonte visuelle 2026
+const appVersion = "2.1";
+const translations = {
+  fr: {
+    title: "Calculateur Horaire",
+    subtitle: "Entrez vos horaires de la journée pour connaître instantanément votre heure de fin.",
+    sectionInputs: "Saisie des horaires",
+    sectionHistory: "Historique",
+    labelArrival: "Heure d'arrivée",
+    labelBreak: "Début de pause déjeuner",
+    labelResume: "Reprise après pause",
+    labelDuration: "Durée de travail prévue",
+    calculateButton: "Calculer mon heure de fin",
+    clearHistoryButton: "Tout effacer",
+    versionDate: "Avr 2026",
+    timeHours: "heure(s)",
+    timeMinutes: "minute(s)",
+    resultTemplate: ( heureFin, duree ) => `Vous devez finir à ${ heureFin } pour travailler ${ duree } au total.`,
+    historyTemplate: ( date, duree, arr, pause, reprise, fin ) => `${ date } - Durée de travail : ${ duree }, Arrivée à ${ arr }, Pause à ${ pause }, Reprise à ${ reprise } => Fin de la journée à ${ fin }`,
+    errorTitle: "Erreur",
+    invalidInputs: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.",
+    invalidSchedule: "Vérifiez vos horaires ! L'heure d'arrivée doit être antérieure à l'heure de pause et l'heure de pause doit être antérieure à l'heure de reprise.",
+    invalidBreak: "Vérifiez vos horaires ! Assurez-vous que la durée de pause est d'au moins 30 minutes et que les horaires sont cohérents.",
+    confirmTitle: "Êtes-vous sûr?",
+    confirmText: "Vous ne pourrez pas revenir en arrière !",
+    confirmYes: "Oui",
+    confirmNo: "Non",
+    deletedTitle: "Supprimé!",
+    deletedEntry: "Votre enregistrement a été supprimé.",
+    deletedHistory: "Votre historique a été supprimé.",
+    emptyHistory: "Il n'y a pas d'historique à supprimer.",
+    languageButton: "EN"
+  },
+  en: {
+    title: "Work Hours Calculator",
+    subtitle: "Enter your daily schedule to instantly get your end-of-day time.",
+    sectionInputs: "Schedule input",
+    sectionHistory: "History",
+    labelArrival: "Start time",
+    labelBreak: "Lunch break start",
+    labelResume: "Back from break",
+    labelDuration: "Planned work duration",
+    calculateButton: "Calculate end time",
+    clearHistoryButton: "Clear all",
+    versionDate: "Apr 2026",
+    timeHours: "hour(s)",
+    timeMinutes: "minute(s)",
+    resultTemplate: ( heureFin, duree ) => `You should finish at ${ heureFin } to work ${ duree } in total.`,
+    historyTemplate: ( date, duree, arr, pause, reprise, fin ) => `${ date } - Work duration: ${ duree }, Start at ${ arr }, Break at ${ pause }, Resume at ${ reprise } => End time ${ fin }`,
+    errorTitle: "Error",
+    invalidInputs: "Please fill in all fields correctly. Make sure work duration is between 1 minute and 12 hours.",
+    invalidSchedule: "Check your schedule! Start time must be before break time, and break time must be before resume time.",
+    invalidBreak: "Check your schedule! Ensure break duration is at least 30 minutes and times are consistent.",
+    confirmTitle: "Are you sure?",
+    confirmText: "You won’t be able to undo this!",
+    confirmYes: "Yes",
+    confirmNo: "No",
+    deletedTitle: "Deleted!",
+    deletedEntry: "Your entry has been deleted.",
+    deletedHistory: "Your history has been deleted.",
+    emptyHistory: "There is no history to delete.",
+    languageButton: "FR"
+  }
+};
 
-versionElem.textContent = "Version " + appVersion + " - " + "Avr 2026";
+const getLanguage = () => localStorage.getItem( "lang-mode" ) || "fr";
+let currentLanguage = getLanguage();
+
+const t = ( key ) => translations[ currentLanguage ][ key ];
+
+const updateVersionText = () => {
+  versionElem.textContent = `Version ${ appVersion } - ${ t( "versionDate" ) }`;
+};
+
+const applyTranslations = () => {
+  document.documentElement.lang = currentLanguage;
+  document.querySelectorAll( "[data-i18n]" ).forEach( ( element ) => {
+    const key = element.getAttribute( "data-i18n" );
+    element.textContent = t( key );
+  } );
+  languageButton.textContent = t( "languageButton" );
+  updateVersionText();
+};
 
 // Fonction pour formater la durée en un format lisible
 const formatDuration = ( duration ) => {
   const [ hours, minutes ] = duration.split( ":" );
-  return `${ parseInt( hours, 10 ) } heure(s) ${ parseInt( minutes, 10 ) > 0 ? parseInt( minutes, 10 ) + " minute(s)" : ""
-    }`;
+  const minutesValue = parseInt( minutes, 10 );
+  return `${ parseInt( hours, 10 ) } ${ t( "timeHours" ) } ${ minutesValue > 0 ? minutesValue + " " + t( "timeMinutes" ) : "" }`.trim();
 };
 
 // Fonction utilitaire pour convertir une heure en objet Date
@@ -53,32 +133,35 @@ themeButton.addEventListener( "click", () => {
   }
 } );
 
+languageButton.addEventListener( "click", () => {
+  currentLanguage = currentLanguage === "fr" ? "en" : "fr";
+  localStorage.setItem( "lang-mode", currentLanguage );
+  applyTranslations();
+} );
+
 // Fonction pour ajouter une entrée à l'historique avec un bouton de suppression
 function ajouterEntreeHistorique ( texte ) {
   const li = document.createElement( "li" );
-  const container = document.createElement( "div" ); // Conteneur pour aligner le bouton et le texte
-  container.className = "list-item-container"; // Utiliser la classe CSS pour le style
-  // Création du bouton de suppression
+  const container = document.createElement( "div" );
+  container.className = "list-item-container";
+
   const supprimerBtn = document.createElement( "button" );
-  supprimerBtn.textContent = "X"; // X au lieu du texte "Supprimer"
-  supprimerBtn.className = "delete-btn"; // Appliquer la classe CSS
+  supprimerBtn.textContent = "X";
+  supprimerBtn.className = "delete-btn";
   supprimerBtn.onclick = function () {
-    // Confirmation avant suppression
     Swal.fire( {
-      title: "Êtes-vous sûr?",
-      text: "Vous ne pourrez pas revenir en arrière !",
+      title: t( "confirmTitle" ),
+      text: t( "confirmText" ),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Non",
+      confirmButtonText: t( "confirmYes" ),
+      cancelButtonText: t( "confirmNo" ),
     } ).then( ( result ) => {
       if ( result.isConfirmed ) {
-        // Suppression de l'entrée de l'UI
         li.remove();
 
-        // Suppression de l'entrée du localStorage
         const historiqueArr =
           JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
         const index = historiqueArr.indexOf( texte );
@@ -87,38 +170,28 @@ function ajouterEntreeHistorique ( texte ) {
         }
         localStorage.setItem( "historiqueArr", JSON.stringify( historiqueArr ) );
 
-        // Affichage de l'alerte de confirmation de suppression
-        Swal.fire(
-          "Supprimé!",
-          "Votre enregistrement a été supprimé.",
-          "success"
-        );
+        Swal.fire( t( "deletedTitle" ), t( "deletedEntry" ), "success" );
       }
     } );
   };
 
-  // Ajout du bouton et du texte au conteneur
-  container.appendChild( supprimerBtn ); // Le bouton d'abord pour qu'il apparaisse à gauche
-  container.appendChild( document.createTextNode( texte ) ); // Utiliser createTextNode pour éviter des problèmes d'espacement
+  container.appendChild( supprimerBtn );
+  container.appendChild( document.createTextNode( texte ) );
 
-  // Ajout du conteneur à l'élément de la liste
   li.appendChild( container );
   historiqueElem.appendChild( li );
 }
 
 // Gestionnaire d'événements pour le bouton de calcul
 document.getElementById( "calculButton" ).addEventListener( "click", () => {
-  // Récupération des valeurs des champs du formulaire
   const heureArrivee = heureArriveeElem.value;
   const heurePause = heurePauseElem.value;
   const heureReprise = heureRepriseElem.value;
-  const dureeTravail = dureeTravailElem.value; // Ce sera maintenant une chaîne au format "HH:mm"
+  const dureeTravail = dureeTravailElem.value;
 
-  // Conversion de la durée de travail en minutes totales
   const [ hours, minutes ] = dureeTravail.split( ":" );
   const dureeTravailMinutes = parseInt( hours, 10 ) * 60 + parseInt( minutes, 10 );
 
-  // Vérification de la validité des entrées
   if (
     !heureArrivee ||
     !heurePause ||
@@ -128,35 +201,31 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
   ) {
     Swal.fire( {
       icon: "error",
-      title: "Erreur",
-      text: "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.",
+      title: t( "errorTitle" ),
+      text: t( "invalidInputs" ),
     } );
     return;
   }
 
-  // Conversion des heures entrées en objets Date pour faciliter les opérations
   const heureArriveeObj = convertToDateTime( heureArrivee );
   const heurePauseObj = convertToDateTime( heurePause );
   const heureRepriseObj = convertToDateTime( heureReprise );
 
-  // Vérification des horaires pour s'assurer de leur cohérence
   if ( heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj ) {
     Swal.fire( {
       icon: "error",
-      title: "Erreur",
-      text: "Vérifiez vos horaires ! L'heure d'arrivée doit être antérieure à l'heure de pause et l'heure de pause doit être antérieure à l'heure de reprise.",
+      title: t( "errorTitle" ),
+      text: t( "invalidSchedule" ),
     } );
     return;
   }
 
-  // Si l'heure de reprise est avant l'heure de pause, cela signifie que la pause s'étend au-delà de minuit
-  if ( heureRepriseObj < heurePauseObj )
+  if ( heureRepriseObj < heurePauseObj ) {
     heureRepriseObj.setDate( heureRepriseObj.getDate() + 1 );
+  }
 
-  // Calcul de la durée de la pause en minutes
   const pauseDuration = ( heureRepriseObj - heurePauseObj ) / ( 1000 * 60 );
 
-  // Vérifications supplémentaires sur la validité des horaires
   if (
     pauseDuration < 30 ||
     heureArriveeObj >= heurePauseObj ||
@@ -164,46 +233,42 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
   ) {
     Swal.fire( {
       icon: "error",
-      title: "Erreur",
-      text: "Vérifiez vos horaires ! Assurez-vous que la durée de pause est d'au moins 30 minutes et que les horaires sont cohérents.",
+      title: t( "errorTitle" ),
+      text: t( "invalidBreak" ),
     } );
     return;
   }
 
-  // Calcul du temps travaillé avant la pause
   const totalMinutes = ( heurePauseObj - heureArriveeObj ) / ( 1000 * 60 );
   const heuresTravailRestant = dureeTravailMinutes - totalMinutes;
 
-  // Calcul de l'heure de fin de travail
   const FinCalcul = new Date(
     heureRepriseObj.getTime() + heuresTravailRestant * 60 * 1000
   );
 
-  // Formatage de l'heure de fin pour l'affichage
   const heureFinFormat = FinCalcul.toLocaleTimeString( [], {
     hour: "2-digit",
     minute: "2-digit",
   } );
 
-  // Mise à jour de l'élément de résultat avec un effet d'opacité pour attirer l'attention
   resultatElem.style.opacity = 0;
   setTimeout( () => {
     resultatElem.style.opacity = 1;
-    resultatElem.innerHTML = `Vous devez finir à ${ heureFinFormat } pour travailler ${ formatDuration(
-      dureeTravail
-    ) } au total.`; // Utilisation de la fonction de formatage ici
+    resultatElem.innerHTML = t( "resultTemplate" )( heureFinFormat, formatDuration( dureeTravail ) );
   }, 50 );
 
-  // Ajout du résultat à la liste de l'historique
   const formattedDate = new Date().toLocaleDateString();
-  const texteHistorique = `${ formattedDate } - Durée de travail : ${ formatDuration(
-    dureeTravail
-  ) }, Arrivée à ${ heureArrivee }, Pause à ${ heurePause }, Reprise à ${ heureReprise } => Fin de la journée à ${ heureFinFormat }`; // Utilisation de la fonction de formatage ici
+  const texteHistorique = t( "historyTemplate" )(
+    formattedDate,
+    formatDuration( dureeTravail ),
+    heureArrivee,
+    heurePause,
+    heureReprise,
+    heureFinFormat
+  );
 
-  // Utilisation de la fonction pour ajouter une entrée à l'historique
   ajouterEntreeHistorique( texteHistorique );
 
-  // Enregistrement du résultat dans le localStorage pour une persistance entre les sessions
   const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
   historiqueArr.push( texteHistorique );
   localStorage.setItem( "historiqueArr", JSON.stringify( historiqueArr ) );
@@ -211,46 +276,42 @@ document.getElementById( "calculButton" ).addEventListener( "click", () => {
 
 // Au chargement du document, récupération et affichage de l'historique depuis le localStorage
 document.addEventListener( "DOMContentLoaded", () => {
+  applyTranslations();
   const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
-  historiqueArr.forEach( ajouterEntreeHistorique ); // Utilisation de la nouvelle fonction ici
+  historiqueArr.forEach( ajouterEntreeHistorique );
 } );
 
 // Gestionnaire d'événements pour le bouton d'effacement de l'historique
 document.getElementById( "clearHistoryButton" ).addEventListener( "click", () => {
   const historiqueArr = JSON.parse( localStorage.getItem( "historiqueArr" ) ) || [];
 
-  // Si l'historique est vide
   if ( historiqueArr.length === 0 ) {
     Swal.fire( {
       icon: "error",
-      title: "Erreur",
-      text: "Il n'y a pas d'historique à supprimer.",
+      title: t( "errorTitle" ),
+      text: t( "emptyHistory" ),
     } );
     return;
   }
 
-  // Confirmation avant suppression
   Swal.fire( {
-    title: "Êtes-vous sûr?",
-    text: "Vous ne pourrez pas revenir en arrière !",
+    title: t( "confirmTitle" ),
+    text: t( "confirmText" ),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Oui",
-    cancelButtonText: "Non",
+    confirmButtonText: t( "confirmYes" ),
+    cancelButtonText: t( "confirmNo" ),
   } ).then( ( result ) => {
     if ( result.isConfirmed ) {
-      // Suppression de l'historique du localStorage
       localStorage.removeItem( "historiqueArr" );
 
-      // Effacement de la liste d'historique à l'écran
       while ( historiqueElem.firstChild ) {
         historiqueElem.removeChild( historiqueElem.firstChild );
       }
 
-      // Notification à l'utilisateur que l'historique a été effacé
-      Swal.fire( "Supprimé!", "Votre historique a été supprimé.", "success" );
+      Swal.fire( t( "deletedTitle" ), t( "deletedHistory" ), "success" );
     }
   } );
 } );

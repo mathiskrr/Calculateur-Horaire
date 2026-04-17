@@ -79,6 +79,15 @@ a:hover {
   max-width: 1140px;
 }
 
+.floating-actions {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  display: flex;
+  gap: 0.5rem;
+}
+
 .hero-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -118,6 +127,9 @@ a:hover {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .wrapper {
@@ -175,6 +187,10 @@ button:active {
   padding: 0.85rem 1rem;
   margin-top: 0.35rem;
   box-shadow: 0 12px 24px color-mix(in oklab, var(--primary) 35%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
 }
 
 .primary-action:hover {
@@ -186,6 +202,10 @@ button:active {
   color: var(--text-color);
   padding: 0.55rem 0.75rem;
   font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
 .secondary-action:hover {
@@ -201,6 +221,7 @@ button:active {
   font-weight: 600;
   min-height: 60px;
   transition: opacity 0.25s ease;
+  text-align: center;
 }
 
 #historique {
@@ -214,6 +235,7 @@ button:active {
   border-bottom: 1px solid var(--history-border);
   padding: 0.65rem 0.2rem;
   font-size: 0.9rem;
+  text-align: center;
 }
 
 #historique li:last-child {
@@ -222,8 +244,10 @@ button:active {
 
 .list-item-container {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: 0.55rem;
+  width: 100%;
 }
 
 .delete-btn {
@@ -233,7 +257,7 @@ button:active {
   font-size: 1rem;
   line-height: 1;
   padding: 0.15rem;
-  margin-top: 0.1rem;
+  margin-top: 0;
   font-weight: 700;
 }
 
@@ -241,10 +265,8 @@ button:active {
   outline: none;
 }
 
-#themeToggleButton {
-  position: fixed;
-  top: 16px;
-  right: 16px;
+#themeToggleButton,
+#languageToggleButton {
   width: 44px;
   height: 44px;
   display: flex;
@@ -254,12 +276,17 @@ button:active {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   box-shadow: var(--shadow-sm);
-  z-index: 20;
+  color: var(--text-color);
 }
 
 #themeToggleButton > img {
   width: 24px;
   height: 24px;
+}
+
+#languageToggleButton {
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
 }
 
 footer {

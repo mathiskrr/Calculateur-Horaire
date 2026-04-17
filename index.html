@@ -38,18 +38,20 @@
   </head>
 
   <body>
-    <button id="themeToggleButton" aria-label="Basculer le thème">
-      <img src="" alt="Icône du thème" />
-    </button>
+    <div class="floating-actions">
+      <button id="languageToggleButton" aria-label="Changer la langue">EN</button>
+      <button id="themeToggleButton" aria-label="Basculer le thème">
+        <img src="" alt="Icône du thème" />
+      </button>
+    </div>
 
     <main class="app-shell container py-4 py-md-5">
       <section class="hero-card mb-4">
         <div class="d-flex align-items-center gap-3 justify-content-center justify-content-md-start">
           <img src="img/logo.png" alt="Logo Application" id="headerImage" />
           <div>
-            <span class="badge text-bg-primary mb-2">Version modernisée 2026</span>
-            <h1 class="mb-1">Calculateur Horaire</h1>
-            <p class="hero-subtitle mb-0">
+            <h1 class="mb-1" data-i18n="title">Calculateur Horaire</h1>
+            <p class="hero-subtitle mb-0" data-i18n="subtitle">
               Entrez vos horaires de la journée pour connaître instantanément votre heure de fin.
             </p>
           </div>
@@ -58,40 +60,48 @@
 
       <section class="content-grid">
         <article class="glass-card form-card">
-          <h2 class="section-title"><i class="bi bi-clock-history"></i> Saisie des horaires</h2>
+          <h2 class="section-title">
+            <i class="bi bi-clock-history"></i>
+            <span data-i18n="sectionInputs">Saisie des horaires</span>
+          </h2>
 
           <div class="wrapper">
-            <label for="heureArrivee">Heure d'arrivée</label>
+            <label for="heureArrivee" data-i18n="labelArrival">Heure d'arrivée</label>
             <input type="time" id="heureArrivee" placeholder="hh:mm" required />
           </div>
 
           <div class="wrapper">
-            <label for="heurePause">Début de pause déjeuner</label>
+            <label for="heurePause" data-i18n="labelBreak">Début de pause déjeuner</label>
             <input type="time" id="heurePause" placeholder="hh:mm" required />
           </div>
 
           <div class="wrapper">
-            <label for="heureReprise">Reprise après pause</label>
+            <label for="heureReprise" data-i18n="labelResume">Reprise après pause</label>
             <input type="time" id="heureReprise" placeholder="hh:mm" required />
           </div>
 
           <div class="wrapper">
-            <label for="dureeTravail">Durée de travail prévue</label>
+            <label for="dureeTravail" data-i18n="labelDuration">Durée de travail prévue</label>
             <input type="time" id="dureeTravail" value="08:00" required />
           </div>
 
           <button id="calculButton" class="primary-action">
-            <i class="bi bi-magic"></i> Calculer mon heure de fin
+            <i class="bi bi-magic"></i>
+            <span data-i18n="calculateButton">Calculer mon heure de fin</span>
           </button>
 
           <p id="resultat" aria-live="polite"></p>
         </article>
 
         <article class="glass-card history-card">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h2 class="section-title mb-0"><i class="bi bi-journal-text"></i> Historique</h2>
+          <div class="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+            <h2 class="section-title mb-0">
+              <i class="bi bi-journal-text"></i>
+              <span data-i18n="sectionHistory">Historique</span>
+            </h2>
             <button id="clearHistoryButton" class="secondary-action">
-              <i class="bi bi-trash3"></i> Tout effacer
+              <i class="bi bi-trash3"></i>
+              <span data-i18n="clearHistoryButton">Tout effacer</span>
             </button>
           </div>
           <ul id="historique"></ul>
