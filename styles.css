@@ -21,18 +21,18 @@
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.08);
   --link-color: #1d4ed8;
 
-  --shell-max-width: 960px;
+  --shell-max-width: 940px;
   --hero-radius: 22px;
   --card-radius: 20px;
   --hero-padding: 1rem;
-  --card-padding: 0.92rem;
+  --card-padding: 0.72rem;
   --grid-gap: 0.8rem;
   --section-title-size: 1rem;
   --label-size: 0.86rem;
-  --input-font-size: 0.94rem;
-  --input-padding-y: 0.7rem;
+  --input-font-size: 0.9rem;
+  --input-padding-y: 0.58rem;
   --input-padding-x: 0.9rem;
-  --button-padding-y: 0.74rem;
+  --button-padding-y: 0.62rem;
   --result-min-height: 46px;
   --history-max-height: 205px;
   --top-actions-size: 40px;
@@ -235,21 +235,21 @@ h1 {
 .section-title {
   font-size: var(--section-title-size);
   font-weight: 700;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.52rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .wrapper {
-  margin-bottom: 0.68rem;
+  margin-bottom: 0.52rem;
 }
 
 label {
   display: block;
   font-size: var(--label-size);
   font-weight: 600;
-  margin-bottom: 0.32rem;
+  margin-bottom: 0.22rem;
 }
 
 input[type="time"],
@@ -299,14 +299,14 @@ button:active {
   width: 100%;
   background: var(--primary);
   color: #fff;
-  padding: var(--button-padding-y) 1rem;
-  margin-top: 0.15rem;
+  padding: var(--button-padding-y) 0.9rem;
+  margin-top: 0.1rem;
   box-shadow: 0 12px 24px color-mix(in oklab, var(--primary) 35%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  min-height: 42px;
+  gap: 0.4rem;
+  min-height: 38px;
 }
 
 .primary-action:hover {
@@ -330,16 +330,16 @@ button:active {
 }
 
 #resultat {
-  margin-top: 0.55rem;
-  border-radius: 14px;
+  margin-top: 0.42rem;
+  border-radius: 12px;
   background: color-mix(in oklab, var(--primary) 10%, var(--card-bg));
   border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent);
-  padding: 0.68rem;
+  padding: 0.5rem 0.62rem;
   font-weight: 600;
-  min-height: var(--result-min-height);
+  min-height: 38px;
   transition: opacity 0.25s ease;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 #historique {
@@ -411,6 +411,13 @@ footer {
 @media (min-width: 992px) {
   .content-grid {
     grid-template-columns: 1.08fr 0.92fr;
+  }
+}
+
+@media (min-width: 992px) {
+  .form-card,
+  .history-card {
+    align-self: start;
   }
 }
 
