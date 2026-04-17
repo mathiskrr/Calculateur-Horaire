@@ -223,6 +223,7 @@ h1 {
   box-shadow: var(--shadow-sm);
   padding: var(--card-padding);
   min-height: 0;
+  overflow: hidden;
 }
 
 .history-card {
