@@ -228,7 +228,7 @@ h1 {
 .history-card {
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -344,11 +344,12 @@ button:active {
 
 #historique {
   list-style: none;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-  max-height: var(--history-max-height);
 }
 
 #historique li {
@@ -411,9 +412,14 @@ footer {
 @media (min-width: 992px) {
   .content-grid {
     grid-template-columns: 1.08fr 0.92fr;
+    align-items: stretch;
   }
 }
 
+.form-card,
+.history-card {
+  height: 100%;
+}
 @media (min-width: 992px) {
   .form-card,
   .history-card {
@@ -463,7 +469,7 @@ footer {
     --input-padding-y: 0.82rem;
     --button-padding-y: 0.8rem;
     --result-min-height: auto;
-    --history-max-height: 260px;
+    /* --history-max-height: 260px; */
   }
 
   .hero-card {
