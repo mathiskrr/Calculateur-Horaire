@@ -1,58 +1,58 @@
-// Eléments du DOM fréquemment utilisés
-const heureArriveeElem = document.getElementById('heureArrivee');
-const heurePauseElem = document.getElementById('heurePause');
-const heureRepriseElem = document.getElementById('heureReprise');
-const dureeTravailElem = document.getElementById('dureeTravail');
-const resultatElem = document.getElementById('resultat');
-const historiqueElem = document.getElementById('historique');
-const themeButton = document.getElementById('themeToggleButton');
-const languageButton = document.getElementById('languageToggleButton');
-const versionElem = document.getElementById('appVersion');
+/// Eléments du DOM fréquemment utilisés
+const heureArriveeElem = document.getElementById("heureArrivee");
+const heurePauseElem = document.getElementById("heurePause");
+const heureRepriseElem = document.getElementById("heureReprise");
+const dureeTravailElem = document.getElementById("dureeTravail");
+const resultatElem = document.getElementById("resultat");
+const historiqueElem = document.getElementById("historique");
+const themeButton = document.getElementById("themeToggleButton");
+const languageButton = document.getElementById("languageToggleButton");
+const versionElem = document.getElementById("appVersion");
 
-const appVersion = '2.5';
-const HISTORY_KEY = 'historiqueArr';
-const LANGUAGE_KEY = 'lang-mode';
-const THEME_KEY = 'theme-mode';
-const LAST_RESULT_KEY = 'last-result';
-const ANNOUNCEMENT_KEY = 'v2-5-announcement-seen';
+const appVersion = "2.5";
+const HISTORY_KEY = "historiqueArr";
+const LANGUAGE_KEY = "lang-mode";
+const THEME_KEY = "theme-mode";
+const LAST_RESULT_KEY = "last-result";
+const ANNOUNCEMENT_KEY = "v2-5-announcement-seen";
 
 const translations = {
   fr: {
-    title: 'Calculateur Horaire',
+    title: "Calculateur Horaire",
     subtitle:
-      'Entrez vos horaires de la journée pour connaître instantanément votre heure de fin.',
-    sectionInputs: 'Saisie des horaires',
-    sectionHistory: 'Historique',
+      "Entrez vos horaires de la journée pour connaître instantanément votre heure de fin.",
+    sectionInputs: "Saisie des horaires",
+    sectionHistory: "Historique",
     labelArrival: "Heure d'arrivée",
-    labelBreak: 'Début de pause déjeuner',
-    labelResume: 'Reprise après pause',
-    labelDuration: 'Durée de travail prévue',
-    calculateButton: 'Calculer mon heure de fin',
-    clearHistoryButton: 'Tout effacer',
-    versionDate: 'Avr 2026',
-    timeHours: 'heure(s)',
-    timeMinutes: 'minute(s)',
+    labelBreak: "Début de pause déjeuner",
+    labelResume: "Reprise après pause",
+    labelDuration: "Durée de travail prévue",
+    calculateButton: "Calculer mon heure de fin",
+    clearHistoryButton: "Tout effacer",
+    versionDate: "Avr 2026",
+    timeHours: "heure(s)",
+    timeMinutes: "minute(s)",
     resultTemplate: (heureFin, duree) =>
       `Vous devez finir à ${heureFin} pour travailler ${duree} au total.`,
     historyTemplate: (date, duree, arr, pause, reprise, fin) =>
       `${date} - Durée de travail : ${duree}, Arrivée à ${arr}, Pause à ${pause}, Reprise à ${reprise} => Fin de la journée à ${fin}`,
-    errorTitle: 'Erreur',
+    errorTitle: "Erreur",
     invalidInputs:
-      'Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.',
+      "Veuillez remplir tous les champs correctement. Assurez-vous que la durée de travail est comprise entre 1 minute et 12 heures.",
     invalidSchedule:
       "Vérifiez vos horaires ! L'heure d'arrivée doit être antérieure à l'heure de pause et l'heure de pause doit être antérieure à l'heure de reprise.",
     invalidBreak:
       "Vérifiez vos horaires ! Assurez-vous que la durée de pause est d'au moins 30 minutes et que les horaires sont cohérents.",
-    confirmTitle: 'Êtes-vous sûr ?',
-    confirmDeleteEntry: 'Cette entrée sera supprimée définitivement.',
+    confirmTitle: "Êtes-vous sûr ?",
+    confirmDeleteEntry: "Cette entrée sera supprimée définitivement.",
     confirmDeleteHistory: "Tout l'historique sera supprimé définitivement.",
-    confirmYes: 'Oui',
-    confirmNo: 'Non',
-    deletedEntry: 'Votre enregistrement a été supprimé.',
-    deletedHistory: 'Votre historique a été supprimé.',
+    confirmYes: "Oui",
+    confirmNo: "Non",
+    deletedEntry: "Votre enregistrement a été supprimé.",
+    deletedHistory: "Votre historique a été supprimé.",
     emptyHistory: "Il n'y a pas d'historique à supprimer.",
-    langAria: 'Passer en anglais',
-    v2Title: '🚀 Calculateur Horaire V2 est disponible',
+    langAria: "Passer en anglais",
+    v2Title: "🚀 Calculateur Horaire V2 est disponible",
     v2Message: `<div style="text-align:left;line-height:1.55">
 <b>✨ Nouveautés majeures</b><br>
 • Interface moderne et 100% responsive<br>
@@ -61,44 +61,44 @@ const translations = {
 • Notifications et confirmations améliorées<br>
 • Nouveau bouton contact pour signaler un bug ou proposer une idée 💡
 </div>`,
-    v2Button: 'Voir les nouveautés',
+    v2Button: "Voir les nouveautés",
   },
   en: {
-    title: 'Work Hours Calculator',
+    title: "Work Hours Calculator",
     subtitle:
-      'Enter your daily schedule to instantly get your end-of-day time.',
-    sectionInputs: 'Schedule input',
-    sectionHistory: 'History',
-    labelArrival: 'Start time',
-    labelBreak: 'Lunch break start',
-    labelResume: 'Back from break',
-    labelDuration: 'Planned work duration',
-    calculateButton: 'Calculate end time',
-    clearHistoryButton: 'Clear all',
-    versionDate: 'Apr 2026',
-    timeHours: 'hour(s)',
-    timeMinutes: 'minute(s)',
+      "Enter your daily schedule to instantly get your end-of-day time.",
+    sectionInputs: "Schedule input",
+    sectionHistory: "History",
+    labelArrival: "Start time",
+    labelBreak: "Lunch break start",
+    labelResume: "Back from break",
+    labelDuration: "Planned work duration",
+    calculateButton: "Calculate end time",
+    clearHistoryButton: "Clear all",
+    versionDate: "Apr 2026",
+    timeHours: "hour(s)",
+    timeMinutes: "minute(s)",
     resultTemplate: (heureFin, duree) =>
       `You should finish at ${heureFin} to work ${duree} in total.`,
     historyTemplate: (date, duree, arr, pause, reprise, fin) =>
       `${date} - Work duration: ${duree}, Start at ${arr}, Break at ${pause}, Resume at ${reprise} => End time ${fin}`,
-    errorTitle: 'Error',
+    errorTitle: "Error",
     invalidInputs:
-      'Please fill in all fields correctly. Make sure work duration is between 1 minute and 12 hours.',
+      "Please fill in all fields correctly. Make sure work duration is between 1 minute and 12 hours.",
     invalidSchedule:
-      'Check your schedule! Start time must be before break time, and break time must be before resume time.',
+      "Check your schedule! Start time must be before break time, and break time must be before resume time.",
     invalidBreak:
-      'Check your schedule! Ensure break duration is at least 30 minutes and times are consistent.',
-    confirmTitle: 'Are you sure?',
-    confirmDeleteEntry: 'This entry will be permanently deleted.',
-    confirmDeleteHistory: 'All history will be permanently deleted.',
-    confirmYes: 'Yes',
-    confirmNo: 'No',
-    deletedEntry: 'Your entry has been deleted.',
-    deletedHistory: 'Your history has been deleted.',
-    emptyHistory: 'There is no history to delete.',
-    langAria: 'Switch to French',
-    v2Title: '🚀 Work Hours Calculator V2 is now available',
+      "Check your schedule! Ensure break duration is at least 30 minutes and times are consistent.",
+    confirmTitle: "Are you sure?",
+    confirmDeleteEntry: "This entry will be permanently deleted.",
+    confirmDeleteHistory: "All history will be permanently deleted.",
+    confirmYes: "Yes",
+    confirmNo: "No",
+    deletedEntry: "Your entry has been deleted.",
+    deletedHistory: "Your history has been deleted.",
+    emptyHistory: "There is no history to delete.",
+    langAria: "Switch to French",
+    v2Title: "🚀 Work Hours Calculator V2 is now available",
     v2Message: `<div style="text-align:left;line-height:1.55">
 <b>✨ Major updates</b><br>
 • Modern and fully responsive interface<br>
@@ -111,15 +111,15 @@ const translations = {
   },
 };
 
-const contactButton = document.getElementById('contactButton');
+const contactButton = document.getElementById("contactButton");
 
-const getLanguage = () => localStorage.getItem(LANGUAGE_KEY) || 'fr';
+const getLanguage = () => localStorage.getItem(LANGUAGE_KEY) || "fr";
 let currentLanguage = getLanguage();
 
 const t = (key) => translations[currentLanguage][key];
 
 const showError = (message) => {
-  Notiflix.Notify.failure(`${t('errorTitle')} · ${message}`);
+  Notiflix.Notify.failure(`${t("errorTitle")} · ${message}`);
 };
 
 const showSuccess = (message) => {
@@ -128,72 +128,72 @@ const showSuccess = (message) => {
 
 const confirmAction = (message, onConfirm) => {
   Notiflix.Confirm.show(
-    t('confirmTitle'),
+    t("confirmTitle"),
     message,
-    t('confirmYes'),
-    t('confirmNo'),
+    t("confirmYes"),
+    t("confirmNo"),
     onConfirm,
     () => {},
     {
-      borderRadius: '14px',
-      width: '360px',
-      titleColor: '#1f2937',
-      okButtonBackground: '#2f6ff6',
-      cancelButtonBackground: '#94a3b8',
-    }
+      borderRadius: "14px",
+      width: "360px",
+      titleColor: "#1f2937",
+      okButtonBackground: "#2f6ff6",
+      cancelButtonBackground: "#94a3b8",
+    },
   );
 };
 
 const updateVersionText = () => {
-  versionElem.textContent = `Version ${appVersion} - ${t('versionDate')}`;
+  versionElem.textContent = `Version ${appVersion} - ${t("versionDate")}`;
 };
 
 const updateLanguageButtonUI = () => {
-  const nextLanguage = currentLanguage === 'fr' ? 'en' : 'fr';
+  const nextLanguage = currentLanguage === "fr" ? "en" : "fr";
 
   const flagSrc =
-    nextLanguage === 'fr'
-      ? 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1eb-1f1f7.svg'
-      : 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1fa-1f1f8.svg';
+    nextLanguage === "fr"
+      ? "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1eb-1f1f7.svg"
+      : "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1fa-1f1f8.svg";
 
-  const flagAlt = nextLanguage === 'fr' ? 'Drapeau français' : 'US flag';
+  const flagAlt = nextLanguage === "fr" ? "Drapeau français" : "US flag";
 
   const label =
-    currentLanguage === 'fr' ? 'Passer en anglais' : 'Switch to French';
+    currentLanguage === "fr" ? "Passer en anglais" : "Switch to French";
 
   languageButton.innerHTML = `<img src="${flagSrc}" alt="${flagAlt}">`;
-  languageButton.setAttribute('aria-label', label);
+  languageButton.setAttribute("aria-label", label);
   languageButton.title = label;
 };
 
 const updateThemeButtonUI = () => {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
 
   themeButton.title =
-    currentLanguage === 'fr'
+    currentLanguage === "fr"
       ? isDark
-        ? 'Passer en mode clair'
-        : 'Passer en mode sombre'
+        ? "Passer en mode clair"
+        : "Passer en mode sombre"
       : isDark
-      ? 'Switch to light mode'
-      : 'Switch to dark mode';
+        ? "Switch to light mode"
+        : "Switch to dark mode";
 
   themeButton.setAttribute(
-    'aria-label',
-    currentLanguage === 'fr'
+    "aria-label",
+    currentLanguage === "fr"
       ? isDark
-        ? 'Passer en mode clair'
-        : 'Passer en mode sombre'
+        ? "Passer en mode clair"
+        : "Passer en mode sombre"
       : isDark
-      ? 'Switch to light mode'
-      : 'Switch to dark mode'
+        ? "Switch to light mode"
+        : "Switch to dark mode",
   );
 };
 
 const applyTranslations = () => {
   document.documentElement.lang = currentLanguage;
-  document.querySelectorAll('[data-i18n]').forEach((element) => {
-    const key = element.getAttribute('data-i18n');
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.getAttribute("data-i18n");
     element.textContent = t(key);
   });
   updateLanguageButtonUI();
@@ -205,34 +205,34 @@ const applyTranslations = () => {
 
 // Fonction pour formater la durée en un format lisible
 const formatDuration = (duration) => {
-  const [hours, minutes] = duration.split(':');
+  const [hours, minutes] = duration.split(":");
   const minutesValue = parseInt(minutes, 10);
-  return `${parseInt(hours, 10)} ${t('timeHours')} ${
-    minutesValue > 0 ? minutesValue + ' ' + t('timeMinutes') : ''
+  return `${parseInt(hours, 10)} ${t("timeHours")} ${
+    minutesValue > 0 ? minutesValue + " " + t("timeMinutes") : ""
   }`.trim();
 };
 
 // Fonction utilitaire pour convertir une heure en objet Date
 const convertToDateTime = (heureStr) => {
   const currentDate = new Date();
-  const [hour, minute] = heureStr.split(':');
+  const [hour, minute] = heureStr.split(":");
   return new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     currentDate.getDate(),
     hour,
-    minute
+    minute,
   );
 };
 
 const toHistoryText = (entry) =>
-  t('historyTemplate')(
+  t("historyTemplate")(
     entry.date,
     formatDuration(entry.dureeTravail),
     entry.heureArrivee,
     entry.heurePause,
     entry.heureReprise,
-    entry.heureFin
+    entry.heureFin,
   );
 
 const parseLegacyHistoryString = (value) => {
@@ -248,18 +248,18 @@ const parseLegacyHistoryString = (value) => {
 
   const durationPart = match[2];
   const frenchDuration = durationPart.match(
-    /(\d+) heure\(s\)(?:\s+(\d+) minute\(s\))?/
+    /(\d+) heure\(s\)(?:\s+(\d+) minute\(s\))?/,
   );
   const englishDuration = durationPart.match(
-    /(\d+) hour\(s\)(?:\s+(\d+) minute\(s\))?/
+    /(\d+) hour\(s\)(?:\s+(\d+) minute\(s\))?/,
   );
   const durationMatch = frenchDuration || englishDuration;
   if (!durationMatch) {
     return null;
   }
 
-  const hours = durationMatch[1].padStart(2, '0');
-  const minutes = (durationMatch[2] || '0').padStart(2, '0');
+  const hours = durationMatch[1].padStart(2, "0");
+  const minutes = (durationMatch[2] || "0").padStart(2, "0");
 
   return {
     date: match[1],
@@ -274,7 +274,7 @@ const parseLegacyHistoryString = (value) => {
 const getHistoryEntries = () => {
   const raw = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
   return raw.map((item) => {
-    if (typeof item === 'string') {
+    if (typeof item === "string") {
       const converted = parseLegacyHistoryString(item);
       return converted || { legacyText: item };
     }
@@ -287,20 +287,20 @@ const saveHistoryEntries = (entries) => {
 };
 
 const createHistoryItem = (entry, index) => {
-  const li = document.createElement('li');
-  const container = document.createElement('div');
-  container.className = 'list-item-container';
+  const li = document.createElement("li");
+  const container = document.createElement("div");
+  container.className = "list-item-container";
 
-  const supprimerBtn = document.createElement('button');
-  supprimerBtn.textContent = 'X';
-  supprimerBtn.className = 'delete-btn';
+  const supprimerBtn = document.createElement("button");
+  supprimerBtn.textContent = "X";
+  supprimerBtn.className = "delete-btn";
   supprimerBtn.onclick = function () {
-    confirmAction(t('confirmDeleteEntry'), () => {
+    confirmAction(t("confirmDeleteEntry"), () => {
       const entries = getHistoryEntries();
       entries.splice(index, 1);
       saveHistoryEntries(entries);
       renderHistory();
-      showSuccess(t('deletedEntry'));
+      showSuccess(t("deletedEntry"));
     });
   };
 
@@ -311,8 +311,8 @@ const createHistoryItem = (entry, index) => {
     ? toHistoryText(legacyConverted)
     : entry.legacyText || toHistoryText(entry);
 
-  const textSpan = document.createElement('span');
-  textSpan.className = 'history-text';
+  const textSpan = document.createElement("span");
+  textSpan.className = "history-text";
   textSpan.textContent = text;
 
   container.appendChild(supprimerBtn);
@@ -323,7 +323,7 @@ const createHistoryItem = (entry, index) => {
 };
 
 const renderHistory = () => {
-  historiqueElem.innerHTML = '';
+  historiqueElem.innerHTML = "";
   const entries = getHistoryEntries();
   entries.forEach((entry, index) => createHistoryItem(entry, index));
 };
@@ -333,81 +333,81 @@ const saveLastResult = (data) => {
 };
 
 const refreshResultFromStorage = () => {
-  const data = JSON.parse(localStorage.getItem(LAST_RESULT_KEY) || 'null');
+  const data = JSON.parse(localStorage.getItem(LAST_RESULT_KEY) || "null");
   if (!data) {
     return;
   }
-  resultatElem.innerHTML = t('resultTemplate')(
+  resultatElem.innerHTML = t("resultTemplate")(
     data.heureFin,
-    formatDuration(data.dureeTravail)
+    formatDuration(data.dureeTravail),
   );
 };
 
 const showV2Announcement = () => {
-  if (localStorage.getItem(ANNOUNCEMENT_KEY) === '1') {
+  if (localStorage.getItem(ANNOUNCEMENT_KEY) === "1") {
     return;
   }
 
-  Notiflix.Report.success(t('v2Title'), t('v2Message'), t('v2Button'), {
-    width: '560px',
-    svgSize: '88px',
-    borderRadius: '18px',
-    titleColor: '#0f172a',
-    messageColor: '#334155',
+  Notiflix.Report.success(t("v2Title"), t("v2Message"), t("v2Button"), {
+    width: "560px",
+    svgSize: "88px",
+    borderRadius: "18px",
+    titleColor: "#0f172a",
+    messageColor: "#334155",
     titleMaxLength: 120,
     messageMaxLength: 1400,
     plainText: false,
-    cssAnimationStyle: 'zoom',
-    buttonBackground: '#2563eb',
-    backOverlayColor: 'rgba(2, 6, 23, 0.68)',
-    fontFamily: 'Inter, sans-serif',
+    cssAnimationStyle: "zoom",
+    buttonBackground: "#2563eb",
+    backOverlayColor: "rgba(2, 6, 23, 0.68)",
+    fontFamily: "Inter, sans-serif",
   });
 
-  localStorage.setItem(ANNOUNCEMENT_KEY, '1');
+  localStorage.setItem(ANNOUNCEMENT_KEY, "1");
 };
 
 // Vérifiez le mode stocké lors du chargement de la page
 const storedTheme = localStorage.getItem(THEME_KEY);
 if (storedTheme) {
-  document.documentElement.setAttribute('data-theme', storedTheme);
+  document.documentElement.setAttribute("data-theme", storedTheme);
 }
 
 themeButton.innerHTML =
-  storedTheme === 'dark'
+  storedTheme === "dark"
     ? '<img src="img/mode-clair.png" alt="">'
     : '<img src="img/mode-sombre.png" alt="">';
 
 updateThemeButtonUI();
 
 // Ajout du bouton de basculement du mode sombre
-themeButton.addEventListener('click', () => {
-  if (document.documentElement.getAttribute('data-theme') === 'dark') {
-    document.documentElement.removeAttribute('data-theme');
+themeButton.addEventListener("click", () => {
+  if (document.documentElement.getAttribute("data-theme") === "dark") {
+    document.documentElement.removeAttribute("data-theme");
     themeButton.innerHTML = '<img src="img/mode-sombre.png" alt="">';
     localStorage.removeItem(THEME_KEY);
   } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.setAttribute("data-theme", "dark");
     themeButton.innerHTML = '<img src="img/mode-clair.png" alt="">';
-    localStorage.setItem(THEME_KEY, 'dark');
+    localStorage.setItem(THEME_KEY, "dark");
   }
 
   updateThemeButtonUI();
 });
 
-languageButton.addEventListener('click', () => {
-  currentLanguage = currentLanguage === 'fr' ? 'en' : 'fr';
+languageButton.addEventListener("click", () => {
+  currentLanguage = currentLanguage === "fr" ? "en" : "fr";
   localStorage.setItem(LANGUAGE_KEY, currentLanguage);
   applyTranslations();
 });
 
 // Gestionnaire d'événements pour le bouton de calcul
-document.getElementById('calculButton').addEventListener('click', () => {
+document.getElementById("calculButton").addEventListener("click", () => {
   const heureArrivee = heureArriveeElem.value;
   const heurePause = heurePauseElem.value;
   const heureReprise = heureRepriseElem.value;
   const dureeTravail = dureeTravailElem.value;
 
-  const [hours, minutes] = dureeTravail.split(':');
+  const [hours, minutes] = dureeTravail.split(":");
   const dureeTravailMinutes = parseInt(hours, 10) * 60 + parseInt(minutes, 10);
 
   if (
@@ -417,7 +417,7 @@ document.getElementById('calculButton').addEventListener('click', () => {
     dureeTravailMinutes <= 0 ||
     dureeTravailMinutes > 12 * 60
   ) {
-    showError(t('invalidInputs'));
+    showError(t("invalidInputs"));
     return;
   }
 
@@ -426,7 +426,7 @@ document.getElementById('calculButton').addEventListener('click', () => {
   const heureRepriseObj = convertToDateTime(heureReprise);
 
   if (heureArriveeObj >= heurePauseObj || heurePauseObj >= heureRepriseObj) {
-    showError(t('invalidSchedule'));
+    showError(t("invalidSchedule"));
     return;
   }
 
@@ -441,7 +441,7 @@ document.getElementById('calculButton').addEventListener('click', () => {
     heureArriveeObj >= heurePauseObj ||
     heurePauseObj >= heureRepriseObj
   ) {
-    showError(t('invalidBreak'));
+    showError(t("invalidBreak"));
     return;
   }
 
@@ -449,12 +449,12 @@ document.getElementById('calculButton').addEventListener('click', () => {
   const heuresTravailRestant = dureeTravailMinutes - totalMinutes;
 
   const FinCalcul = new Date(
-    heureRepriseObj.getTime() + heuresTravailRestant * 60 * 1000
+    heureRepriseObj.getTime() + heuresTravailRestant * 60 * 1000,
   );
 
   const heureFinFormat = FinCalcul.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   const resultPayload = {
@@ -465,9 +465,9 @@ document.getElementById('calculButton').addEventListener('click', () => {
   resultatElem.style.opacity = 0;
   setTimeout(() => {
     resultatElem.style.opacity = 1;
-    resultatElem.innerHTML = t('resultTemplate')(
+    resultatElem.innerHTML = t("resultTemplate")(
       heureFinFormat,
-      formatDuration(dureeTravail)
+      formatDuration(dureeTravail),
     );
   }, 50);
   saveLastResult(resultPayload);
@@ -488,55 +488,55 @@ document.getElementById('calculButton').addEventListener('click', () => {
 });
 
 // Au chargement du document, récupération et affichage de l'historique depuis le localStorage
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   localStorage.removeItem(LAST_RESULT_KEY);
-  resultatElem.textContent = '';
+  resultatElem.textContent = "";
   applyTranslations();
   showV2Announcement();
 });
 
 // Gestionnaire d'événements pour le bouton d'effacement de l'historique
-document.getElementById('clearHistoryButton').addEventListener('click', () => {
+document.getElementById("clearHistoryButton").addEventListener("click", () => {
   const historiqueArr = getHistoryEntries();
 
   if (historiqueArr.length === 0) {
-    showError(t('emptyHistory'));
+    showError(t("emptyHistory"));
     return;
   }
 
-  confirmAction(t('confirmDeleteHistory'), () => {
+  confirmAction(t("confirmDeleteHistory"), () => {
     localStorage.removeItem(HISTORY_KEY);
-    historiqueElem.innerHTML = '';
-    showSuccess(t('deletedHistory'));
+    historiqueElem.innerHTML = "";
+    showSuccess(t("deletedHistory"));
   });
 });
 
 const updateContactButtonUI = () => {
   contactButton.setAttribute(
-    'aria-label',
-    currentLanguage === 'fr'
-      ? 'Contacter le développeur'
-      : 'Contact the developer'
+    "aria-label",
+    currentLanguage === "fr"
+      ? "Contacter le développeur"
+      : "Contact the developer",
   );
 
   contactButton.title =
-    currentLanguage === 'fr'
-      ? 'Signaler un bug ou proposer une amélioration'
-      : 'Report a bug or suggest an improvement';
+    currentLanguage === "fr"
+      ? "Signaler un bug ou proposer une amélioration"
+      : "Report a bug or suggest an improvement";
 };
 
-contactButton.addEventListener('click', () => {
+contactButton.addEventListener("click", () => {
   const subject =
-    currentLanguage === 'fr'
-      ? 'Calculateur Horaire - Bug ou suggestion'
-      : 'Work Hours Calculator - Bug or suggestion';
+    currentLanguage === "fr"
+      ? "Calculateur Horaire - Bug ou suggestion"
+      : "Work Hours Calculator - Bug or suggestion";
 
   const body =
-    currentLanguage === 'fr'
+    currentLanguage === "fr"
       ? "Bonjour,\n\nJ'ai trouvé un bug / j'ai une idée d'amélioration :\n\n"
-      : 'Hello,\n\nI found a bug / I have an improvement idea:\n\n';
+      : "Hello,\n\nI found a bug / I have an improvement idea:\n\n";
 
   window.location.href = `mailto:webmat.job@gmail.com?subject=${encodeURIComponent(
-    subject
+    subject,
   )}&body=${encodeURIComponent(body)}`;
 });
