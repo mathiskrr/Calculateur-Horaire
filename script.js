@@ -84,7 +84,7 @@ let currentLanguage = getLanguage();
 const t = ( key ) => translations[ currentLanguage ][ key ];
 
 Notiflix.Notify.init( {
-  position: "right-top",
+  position: "left-top",
   timeout: 3800,
   clickToClose: true,
   borderRadius: "10px",
@@ -121,7 +121,11 @@ const updateVersionText = () => {
 };
 
 const updateLanguageButtonUI = () => {
-  languageButton.textContent = currentLanguage === "fr" ? "🇫🇷" : "🇬🇧";
+  const flagSrc = currentLanguage === "fr"
+    ? "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1eb-1f1f7.svg"
+    : "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg";
+  const flagAlt = currentLanguage === "fr" ? "Drapeau français" : "UK flag";
+  languageButton.innerHTML = `<img src="${ flagSrc }" alt="${ flagAlt }">`;
   languageButton.setAttribute( "aria-label", t( "langAria" ) );
 };
 
@@ -166,11 +170,38 @@ const toHistoryText = ( entry ) => t( "historyTemplate" )(
   entry.heureFin
 );
 
+const parseLegacyHistoryString = ( value ) => {
+  const pattern = /^(\d{1,2}\/\d{1,2}\/\d{2,4}) - Durée de travail : ([^,]+), Arrivée à (\d{2}:\d{2}), Pause à (\d{2}:\d{2}), Reprise à (\d{2}:\d{2}) => Fin de la journée à (\d{2}:\d{2})$/;
+  const match = value.match( pattern );
+  if ( !match ) {
+    return null;
+  }
+
+  const durationPart = match[ 2 ];
+  const durationMatch = durationPart.match( /(\d+) heure\(s\)(?:\s+(\d+) minute\(s\))?/ );
+  if ( !durationMatch ) {
+    return null;
+  }
+
+  const hours = durationMatch[ 1 ].padStart( 2, "0" );
+  const minutes = ( durationMatch[ 2 ] || "0" ).padStart( 2, "0" );
+
+  return {
+    date: match[ 1 ],
+    dureeTravail: `${ hours }:${ minutes }`,
+    heureArrivee: match[ 3 ],
+    heurePause: match[ 4 ],
+    heureReprise: match[ 5 ],
+    heureFin: match[ 6 ],
+  };
+};
+
 const getHistoryEntries = () => {
   const raw = JSON.parse( localStorage.getItem( HISTORY_KEY ) ) || [];
   return raw.map( ( item ) => {
     if ( typeof item === "string" ) {
-      return { legacyText: item };
+      const converted = parseLegacyHistoryString( item );
+      return converted || { legacyText: item };
     }
     return item;
   } );

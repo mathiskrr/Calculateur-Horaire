@@ -290,6 +290,12 @@ button:active {
   letter-spacing: 0;
 }
 
+#languageToggleButton > img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
 footer {
   text-align: center;
   padding: 0.2rem 1rem 1.2rem;
