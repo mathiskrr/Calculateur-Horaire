@@ -1,252 +1,285 @@
-/* Variables par défaut (mode clair) */
 :root {
-  --bg-color: #e9ecef;
-  --text-color: #495057;
-  --input-bg: white;
-  --border-color: #ced4da;
-  --button-bg-color: #007bff;
-  --button-hover-bg-color: #0056b3;
-  --button-text-color: #fff;
-  --title-color: #333;
-  --label-color: #495057;
-  --link-color: blue;
+  --bg-color: #f3f7ff;
+  --bg-gradient: radial-gradient(circle at 15% 20%, #deebff 0%, rgba(222, 235, 255, 0) 38%),
+    radial-gradient(circle at 85% 5%, #d9f9ef 0%, rgba(217, 249, 239, 0) 30%),
+    linear-gradient(135deg, #f8fbff 0%, #eef2ff 100%);
+  --text-color: #1f2937;
+  --muted-text: #64748b;
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --input-bg: #ffffff;
+  --input-border: #d3ddf3;
+  --input-focus: #3579f6;
+  --primary: #2f6ff6;
+  --primary-hover: #1b57d3;
+  --secondary: #e8eefc;
+  --secondary-hover: #d9e4fa;
+  --danger: #ef4444;
+  --history-border: #e5eaf7;
+  --shadow-lg: 0 24px 60px rgba(47, 111, 246, 0.16);
+  --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.08);
+  --link-color: #1d4ed8;
 }
 
-/* Mode sombre */
 [data-theme="dark"] {
-  --bg-color: #121212;
-  --text-color: white;
-  --input-bg: #2c2c2c;
-  --border-color: #555;
-  --button-bg-color: #0056b3;
-  --button-hover-bg-color: #007bff;
-  --button-text-color: #fff;
-  --title-color: white;
-  --label-color: white;
-  --link-color: #4f9dff;
+  --bg-color: #070c19;
+  --bg-gradient: radial-gradient(circle at 20% 20%, rgba(45, 68, 128, 0.35) 0%, rgba(45, 68, 128, 0) 35%),
+    radial-gradient(circle at 85% 10%, rgba(37, 112, 99, 0.25) 0%, rgba(37, 112, 99, 0) 30%),
+    linear-gradient(135deg, #0b1020 0%, #111a30 100%);
+  --text-color: #ecf3ff;
+  --muted-text: #a7b6d6;
+  --card-bg: rgba(20, 29, 52, 0.78);
+  --card-border: rgba(110, 137, 198, 0.25);
+  --input-bg: #101a31;
+  --input-border: #2f4370;
+  --input-focus: #5d94ff;
+  --primary: #5d94ff;
+  --primary-hover: #4c82ee;
+  --secondary: #1b2748;
+  --secondary-hover: #22325d;
+  --danger: #f87171;
+  --history-border: #243459;
+  --shadow-lg: 0 24px 60px rgba(2, 6, 23, 0.55);
+  --shadow-sm: 0 10px 25px rgba(2, 6, 23, 0.4);
+  --link-color: #87b2ff;
 }
 
-.delete-btn {
-  background-color: transparent; /* Fond transparent */
-  color: red; /* Couleur du X */
-  border: none; /* Pas de bordure */
-  cursor: pointer; /* Curseur en forme de main */
-  font-weight: bold; /* Rendre le X gras */
-  font-size: 1.5em; /* Taille du X */
-  margin-right: 10px; /* Espace entre le bouton et le texte */
-  margin-top: 0px;
-  vertical-align: middle; /* Alignement vertical */
-}
-
-.delete-btn:focus {
-  outline: none; /* Supprimer la bordure de focus */
-}
-
-.list-item-container {
-  display: flex; /* Utiliser Flexbox */
-  align-items: center; /* Centrer verticalement les éléments à l'intérieur */
-  justify-content: flex-start; /* Aligner les éléments à gauche */
-}
-
-/* Style pour les liens */
-a {
-  color: var(--link-color, blue); /* couleur par défaut pour le mode clair */
-  text-decoration: none; /* optionnel : pour enlever le soulignement des liens */
-}
-
-a:hover {
-  text-decoration: underline; /* optionnel : pour souligner les liens au survol */
-}
-
-[data-theme="dark"] input[type="time"],
-[data-theme="dark"] input[type="number"] {
-  background-color: #333; /* fond sombre */
-  color: #e9ecef; /* texte clair */
-  border: 1px solid #495057; /* bordure plus foncée */
-}
-
-/* Adapter également la couleur de la bordure lors du focus en mode sombre */
-[data-theme="dark"] input[type="time"]:focus,
-[data-theme="dark"] input[type="number"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: var(--bg-color);
-  color: var(--text-color);
   margin: 0;
-  padding: 0;
+  min-height: 100vh;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
 }
 
 h1,
-h2 {
-  color: var(--title-color);
+h2,
+p,
+label,
+ul {
+  margin: 0;
 }
 
-p {
-  font-size: 18px;
-  margin: 15px 0;
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.app-shell {
+  max-width: 1140px;
+}
+
+.hero-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(8px);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.hero-subtitle {
+  color: var(--muted-text);
+  font-size: 0.98rem;
+}
+
+#headerImage {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(8px);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+  padding: 1.3rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.wrapper {
+  margin-bottom: 1rem;
 }
 
 label {
-  font-weight: bold;
   display: block;
-  margin: 15px 0;
-  font-size: 16px;
-  color: var(--label-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
 }
 
 input[type="time"],
 input[type="number"] {
-  width: 150px;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: #fff; /* fond blanc */
-  color: #333; /* texte noir */
-  border: 1px solid #ced4da; /* Bordure grisâtre */
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.85rem 0.9rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
 }
 
 input[type="time"]:focus,
 input[type="number"]:focus {
-  border-color: var(--button-bg-color);
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--input-focus) 25%, transparent);
+  transform: translateY(-1px);
 }
 
 button {
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  padding: 10px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  margin-bottom: 0px;
-}
-
-#clearHistoryButton {
-  margin-top: 0;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: var(--button-hover-bg-color);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.primary-action {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.85rem 1rem;
+  margin-top: 0.35rem;
+  box-shadow: 0 12px 24px color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+.primary-action:hover {
+  background: var(--primary-hover);
+}
+
+.secondary-action {
+  background: var(--secondary);
+  color: var(--text-color);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+}
+
+.secondary-action:hover {
+  background: var(--secondary-hover);
 }
 
 #resultat {
-  font-weight: bold;
-  margin-top: 20px;
-  font-size: 18px;
+  margin-top: 1rem;
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--primary) 10%, var(--card-bg));
+  border: 1px solid color-mix(in oklab, var(--primary) 28%, transparent);
+  padding: 0.9rem;
+  font-weight: 600;
+  min-height: 60px;
+  transition: opacity 0.25s ease;
 }
 
 #historique {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 50px;
-}
-
-/* Conteneur pour centrer le contenu et limiter sa largeur */
-.container {
-  max-width: 962px; /* vous pouvez ajuster cette valeur selon vos préférences */
-  margin: 0 auto;
-  padding: 0 20px; /* un peu de padding pour éviter que le contenu touche les bords sur les petits écrans */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  list-style: none;
+  max-height: 430px;
+  overflow: auto;
+  padding-right: 0.35rem;
 }
 
 #historique li {
-  padding: 10px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 16px;
+  border-bottom: 1px solid var(--history-border);
+  padding: 0.65rem 0.2rem;
+  font-size: 0.9rem;
 }
 
 #historique li:last-child {
   border-bottom: none;
 }
 
-/* Animation pour le bouton */
-.animate {
-  animation: pulse 0.5s infinite alternate;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-
-#appVersion {
-  font-size: 12px; /* Taille de police plus petite pour la version */
-  color: var(
-    --text-color
-  ); /* Utilisation de la couleur de texte définie pour le thème */
-  z-index: 999; /* Juste en dessous du bouton de mode sombre */
-}
-
-#credits {
-  font-size: 12px; /* Taille de police plus petite pour les crédits */
-  color: var(
-    --text-color
-  ); /* Utilisation de la couleur de texte définie pour le thème */
-}
-footer {
+.list-item-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px 10px 20px;
-}
-.header-container {
-  display: flex;
-  align-items: center; /* aligne verticalement les éléments au centre */
-  justify-content: center; /* aligne horizontalement les éléments au centre */
-  width: 100%;
+  align-items: flex-start;
+  gap: 0.55rem;
 }
 
-#headerImage {
-  height: 50px;
-  width: auto;
-  margin-right: 10px;
+.delete-btn {
+  background: transparent;
+  color: var(--danger);
+  border: 0;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.15rem;
+  margin-top: 0.1rem;
+  font-weight: 700;
 }
 
-/* Media Query pour les écrans de taille réduite */
-@media screen and (max-width: 768px) {
-  input[type="time"],
-  input[type="number"] {
-    width: 130px;
-    font-size: 14px;
-  }
-  #headerImage {
-    height: 30px; /* réduisez la taille de l'image pour les petits écrans */
-  }
+.delete-btn:focus {
+  outline: none;
+}
 
-  button {
-    font-size: 14px;
-    padding: 8px 24px;
-  }
-}
-#calculButton {
-  margin-top: 10px;
-}
 #themeToggleButton {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 40px;
-  aspect-ratio: 1/1;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  z-index: 20;
 }
+
 #themeToggleButton > img {
-  height: 100%;
+  width: 24px;
+  height: 24px;
+}
+
+footer {
+  text-align: center;
+  padding: 0.2rem 1rem 1.2rem;
+}
+
+#credits,
+#appVersion {
+  color: var(--muted-text);
+  font-size: 0.82rem;
+}
+
+@media (min-width: 992px) {
+  .content-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+
+  .form-card,
+  .history-card {
+    min-height: 560px;
+  }
 }

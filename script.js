@@ -8,9 +8,9 @@ const historiqueElem = document.getElementById( "historique" );
 const themeButton = document.getElementById( "themeToggleButton" );
 const versionElem = document.getElementById( "appVersion" )
 
-const appVersion = "1.3"; // Remplacez par la version actuelle de l'application
+const appVersion = "2.0"; // Refonte visuelle 2026
 
-versionElem.textContent = "Version " + appVersion + " - " + "Oct 2023";
+versionElem.textContent = "Version " + appVersion + " - " + "Avr 2026";
 
 // Fonction pour formater la durée en un format lisible
 const formatDuration = ( duration ) => {
