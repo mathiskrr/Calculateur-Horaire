@@ -60,9 +60,8 @@
 
 body {
   margin: 0;
-  min-height: 100svh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   font-family: "Inter", "Segoe UI", sans-serif;
@@ -71,7 +70,6 @@ body {
   background-image: var(--bg-gradient);
   background-attachment: fixed;
 }
-
 h1,
 h2,
 p,
@@ -93,10 +91,11 @@ a:hover {
   max-width: 1140px;
   width: 100%;
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  padding-top: 0.6rem !important;
-  padding-bottom: 0.75rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.2rem !important;
 }
 
 .floating-actions {
@@ -349,17 +348,175 @@ footer {
 @media (min-width: 992px) {
   .content-grid {
     grid-template-columns: 1.05fr 0.95fr;
-    align-items: start;
+    align-items: stretch;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .form-card,
+  .history-card {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .hero-card {
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 0.9rem !important;
+  }
+
+  .glass-card {
+    padding: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .wrapper {
+    margin-bottom: 0.75rem;
+  }
+
+  label {
+    font-size: 0.88rem;
+    margin-bottom: 0.35rem;
+  }
+
+  input[type="time"],
+  input[type="number"] {
+    padding: 0.72rem 0.85rem;
+    font-size: 0.96rem;
+  }
+
+  .primary-action {
+    padding: 0.78rem 0.95rem;
+    margin-top: 0.2rem;
+  }
+
+  #resultat {
+    margin-top: 0.75rem;
+    min-height: 52px;
+    padding: 0.75rem;
+    font-size: 0.94rem;
+  }
+
+  #historique li {
+    padding: 0.45rem 0.5rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.9rem;
+  }
+
+  footer {
+    padding: 0 1rem 0.1rem;
+  }
+
+  #credits,
+  #appVersion {
+    font-size: 0.78rem;
+  }
+}
+
+@media (min-width: 992px) and (max-height: 900px) {
+  .floating-actions {
+    top: 12px;
+    right: 12px;
+    gap: 0.4rem;
+  }
+
+  #contactButton,
+  #themeToggleButton,
+  #languageToggleButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  #languageToggleButton {
+    width: 46px;
+  }
+
+  #headerImage {
+    width: 48px;
+    height: 48px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .hero-subtitle {
+    font-size: 0.92rem;
+  }
+
+  .content-grid {
+    gap: 0.8rem;
+  }
+
+  .hero-card {
+    padding: 0.95rem 1.2rem;
+    border-radius: 20px;
+  }
+
+  .glass-card {
+    padding: 0.85rem;
+    border-radius: 18px;
+  }
+
+  .wrapper {
+    margin-bottom: 0.65rem;
+  }
+
+  label {
+    font-size: 0.84rem;
+    margin-bottom: 0.28rem;
+  }
+
+  input[type="time"],
+  input[type="number"] {
+    padding: 0.64rem 0.8rem;
+    font-size: 0.92rem;
+    border-radius: 12px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    min-height: 40px;
+  }
+
+  .primary-action {
+    font-size: 0.94rem;
+  }
+
+  .secondary-action {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+  #resultat {
+    min-height: 46px;
+    padding: 0.65rem;
+    margin-top: 0.65rem;
+  }
+
+  #historique li {
+    padding: 0.38rem 0.45rem;
+    margin-bottom: 0.38rem;
+    font-size: 0.86rem;
+  }
+}
+
+@media (min-width: 992px) and (max-height: 760px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .hero-card {
+    margin-bottom: 0.7rem !important;
   }
 
   .history-card {
-    max-height: 620px;
-    overflow: hidden;
-  }
-
-  #historique {
-    overflow-y: auto;
-    overflow-x: hidden;
+    display: none;
   }
 }
 
